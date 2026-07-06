@@ -124,6 +124,21 @@
       justify-content: flex-end;
     }
 
+    .session-status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 12px;
+      border: 1px solid rgba(69, 226, 138, 0.28);
+      border-radius: 6px;
+      background: rgba(69, 226, 138, 0.08);
+      color: #45e28a;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
     .button {
       display: inline-flex;
       align-items: center;
@@ -155,6 +170,10 @@
 
     .button--secondary {
       background: rgba(255, 255, 255, 0.06);
+    }
+
+    [hidden] {
+      display: none !important;
     }
 
     .hero {
@@ -321,22 +340,25 @@
         <span>The home of 21 Hold'em</span>
       </a>
       <nav class="nav-actions" aria-label="Account actions">
-        <a id="loginTopLink" class="button button--secondary" href="#">Sign in</a>
-        <a id="registerTopLink" class="button button--primary" href="#">Create account</a>
+        <span id="sessionStatus" class="session-status signed-in" hidden>Signed in with 21 Hold'em</span>
+        <a id="loginTopLink" class="button button--secondary signed-out" href="#">Sign in</a>
+        <a id="registerTopLink" class="button button--primary signed-out" href="#">Create account</a>
+        <a id="accountTopLink" class="button button--primary signed-in" href="#" hidden>Open 21 Hold'em</a>
       </nav>
     </header>
 
     <main class="hero">
       <section class="hero-grid" aria-label="Big Slick Games 21 Hold'em gateway">
         <div class="copy">
-          <span class="eyebrow">No separate website account</span>
+          <span class="eyebrow">One login for Big Slick Games and 21 Hold'em</span>
           <h1>Play 21 Hold'em through Big Slick Games.</h1>
           <p class="lead">Big Slick Games is the public gateway. All sign in, registration, verification, bankroll, and profile access is handled by the 21 Hold'em login system.</p>
           <div class="cta-row">
             <a id="playLink" class="button button--primary" href="#">Play 21 Hold'em</a>
-            <a id="loginHeroLink" class="button button--secondary" href="#">Sign in with 21 Hold'em</a>
+            <a id="loginHeroLink" class="button button--secondary signed-out" href="#">Sign in with 21 Hold'em</a>
+            <a id="accountHeroLink" class="button button--secondary signed-in" href="#" hidden>Continue signed in</a>
           </div>
-          <p class="auth-note">This website does not create or store separate web accounts. Choosing sign in or create account sends you to the Docker-hosted 21 Hold'em auth screen.</p>
+          <p class="auth-note">This website does not create or store separate web accounts. If you are already signed into 21 Hold'em on this host, the Hub uses that same session.</p>
         </div>
 
         <aside class="game-showcase" aria-label="Featured game">
@@ -347,7 +369,8 @@
           </div>
           <h2>21 Hold'em</h2>
           <p>Poker table pressure, blackjack totals, shared community cards, and account access from the existing 21 Hold'em auth system.</p>
-          <a id="registerCardLink" class="button button--primary" href="#">Create account</a>
+          <a id="registerCardLink" class="button button--primary signed-out" href="#">Create account</a>
+          <a id="accountCardLink" class="button button--primary signed-in" href="#" hidden>Enter game</a>
         </aside>
       </section>
     </main>
@@ -391,11 +414,37 @@
       }
     }
 
+    function readCookie(name) {
+      return document.cookie
+        .split(';')
+        .map((value) => value.trim())
+        .find((value) => value.startsWith(`${name}=`))
+        ?.split('=')
+        .slice(1)
+        .join('=') || '';
+    }
+
+    function applySessionState() {
+      const has21HoldemSession = Boolean(readCookie('sAuthToken'));
+      document.body.classList.toggle('is-authenticated', has21HoldemSession);
+
+      document.querySelectorAll('.signed-in').forEach((node) => {
+        node.hidden = !has21HoldemSession;
+      });
+
+      document.querySelectorAll('.signed-out').forEach((node) => {
+        node.hidden = has21HoldemSession;
+      });
+    }
+
     const links = {
       loginTopLink: '/login',
       loginHeroLink: '/login',
       registerTopLink: '/register',
       registerCardLink: '/register',
+      accountTopLink: '/',
+      accountHeroLink: '/',
+      accountCardLink: '/',
       playLink: '/',
     };
 
@@ -403,6 +452,8 @@
       const node = document.getElementById(id);
       if (node) node.href = resolveGameUrl(path);
     });
+
+    applySessionState();
   </script>
 </body>
 </html>
