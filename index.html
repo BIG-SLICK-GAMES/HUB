@@ -245,6 +245,56 @@
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
     }
 
+    .time-control {
+      display: grid;
+      gap: 10px;
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--panel);
+    }
+
+    .time-control__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--soft);
+      font-size: 13px;
+      font-weight: 950;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .time-control__value {
+      color: var(--gold);
+    }
+
+    .time-control input[type="range"] {
+      width: 100%;
+      accent-color: var(--orange);
+      cursor: pointer;
+    }
+
+    .time-control__actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .time-control__button {
+      min-height: 32px;
+      padding: 8px 10px 7px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 950;
+      line-height: 1;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
     .search-icon {
       width: 20px;
       height: 20px;
@@ -923,6 +973,17 @@
     <aside class="sidebar-left" aria-label="Casino controls">
       <div class="search"><span class="search-icon"></span><span>Search ...</span></div>
 
+      <section class="time-control" aria-label="Lighting preview">
+        <div class="time-control__top">
+          <span>Lighting</span>
+          <span id="timeControlValue" class="time-control__value">Auto</span>
+        </div>
+        <input id="timeControlSlider" type="range" min="0" max="24" step="0.25" aria-label="Preview site lighting time">
+        <div class="time-control__actions">
+          <button id="timeAutoButton" class="time-control__button" type="button">Use AEST Auto</button>
+        </div>
+      </section>
+
       <section>
         <h2 class="section-title">Providers <span>‹ ›</span></h2>
         <div class="providers">
@@ -1113,8 +1174,24 @@
       return hour + (minute / 60);
     }
 
-    function applyAestLightingTheme() {
-      const hour = getBrisbaneDecimalHour();
+    let manualLightingHour = null;
+
+    function formatHourLabel(hour) {
+      const normalized = ((hour % 24) + 24) % 24;
+      const wholeHour = Math.floor(normalized);
+      const minutes = Math.round((normalized - wholeHour) * 60);
+      const displayHour = wholeHour % 12 || 12;
+      const suffix = wholeHour >= 12 ? 'PM' : 'AM';
+      return `${displayHour}:${String(minutes).padStart(2, '0')} ${suffix}`;
+    }
+
+    function updateTimeControlLabel(hour) {
+      const label = document.getElementById('timeControlValue');
+      if (!label) return;
+      label.textContent = manualLightingHour === null ? `Auto ${formatHourLabel(hour)}` : formatHourLabel(hour);
+    }
+
+    function applyLightingTheme(hour) {
       const root = document.documentElement;
 
       const day = {
@@ -1179,6 +1256,32 @@
       root.style.setProperty('--light-sweep-opacity', (day.sweepOpacity + ((night.sweepOpacity - day.sweepOpacity) * nightAmount)).toFixed(2));
       root.style.setProperty('--light-sweep-warmth', mixRgba(day.sweepWarmth, night.sweepWarmth, nightAmount));
       document.body.dataset.themeTime = nightAmount >= 0.75 ? 'night' : nightAmount <= 0.2 ? 'day' : 'sunset';
+      updateTimeControlLabel(hour);
+    }
+
+    function applyAestLightingTheme() {
+      applyLightingTheme(manualLightingHour === null ? getBrisbaneDecimalHour() : manualLightingHour);
+    }
+
+    function setupTimeControl() {
+      const slider = document.getElementById('timeControlSlider');
+      const autoButton = document.getElementById('timeAutoButton');
+      if (!slider || !autoButton) return;
+
+      const currentHour = getBrisbaneDecimalHour();
+      slider.value = String(Math.round(currentHour * 4) / 4);
+
+      slider.addEventListener('input', () => {
+        manualLightingHour = Number(slider.value);
+        applyAestLightingTheme();
+      });
+
+      autoButton.addEventListener('click', () => {
+        manualLightingHour = null;
+        const hour = getBrisbaneDecimalHour();
+        slider.value = String(Math.round(hour * 4) / 4);
+        applyAestLightingTheme();
+      });
     }
 
     const links = {
@@ -1199,6 +1302,7 @@
     });
 
     applyAestLightingTheme();
+    setupTimeControl();
     applySessionState();
     setInterval(applyAestLightingTheme, 5 * 60 * 1000);
   </script>
