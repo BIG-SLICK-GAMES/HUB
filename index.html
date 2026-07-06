@@ -31,8 +31,8 @@
       --shell-end: #11141a;
       --panel-light: rgba(255, 255, 255, 0.04);
       --button-primary-shadow: rgba(255, 61, 0, 0.42);
-      --button-secondary-bg: rgba(5, 7, 10, 0.62);
-      --button-secondary-ring: rgba(255, 255, 255, 0.18);
+      --button-secondary-bg: rgba(255, 106, 0, 0.92);
+      --button-secondary-ring: rgba(255, 177, 59, 0.34);
       --light-sweep-opacity: 0.8;
       --light-sweep-warmth: rgba(255, 194, 74, 0.16);
       --light-x: 25%;
@@ -44,6 +44,14 @@
       --surface-glint: rgba(255, 255, 255, 0.1);
       --surface-shadow: rgba(0, 0, 0, 0.36);
       --button-shine-opacity: 0.5;
+      --control-highlight: rgba(255, 255, 255, 0.18);
+      --control-glare: rgba(255, 255, 255, 0.14);
+      --control-warm-rim: rgba(255, 177, 59, 0.3);
+      --control-shadow: rgba(0, 0, 0, 0.34);
+      --info-square-bg:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 42%),
+        linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.1), transparent 56%),
+        linear-gradient(145deg, rgba(34, 47, 66, 0.86), rgba(9, 16, 28, 0.94));
     }
 
     * {
@@ -200,14 +208,32 @@
       padding: 12px 18px 11px;
       border-radius: 999px;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      background: var(--button-secondary-bg);
-      color: var(--ink);
+      background:
+        radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 255, 255, 0.34), transparent 34%),
+        linear-gradient(180deg, var(--orange), var(--orange-2));
+      color: #160701;
       font-size: 13px;
       font-weight: 950;
       line-height: 1;
       text-transform: uppercase;
       transition: transform 140ms ease, filter 140ms ease;
       white-space: nowrap;
+    }
+
+    .button::before,
+    .hero-card::before,
+    .thumb::before,
+    .quick-item::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at var(--light-x) var(--light-y), var(--control-highlight), transparent 36%),
+        linear-gradient(var(--shine-angle), transparent 0%, var(--control-glare) 48%, transparent 63%);
+      opacity: var(--button-shine-opacity);
+      mix-blend-mode: screen;
     }
 
     .button::after {
@@ -242,13 +268,23 @@
 
     .button--primary {
       border: 0;
-      background: linear-gradient(180deg, var(--orange), var(--orange-2));
+      background:
+        radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 255, 255, 0.34), transparent 34%),
+        linear-gradient(180deg, var(--orange), var(--orange-2));
       color: #160701;
-      box-shadow: var(--shadow-x) var(--shadow-y) 38px var(--button-primary-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.34);
+      box-shadow:
+        calc(var(--shadow-x) * 0.68) calc(var(--shadow-y) * 0.68) 38px var(--button-primary-shadow),
+        calc(var(--shadow-x) * 0.32) calc(var(--shadow-y) * 0.32) 20px var(--control-shadow),
+        inset calc(var(--shadow-x) * -0.08) calc(var(--shadow-y) * -0.08) 16px rgba(255, 255, 255, 0.28),
+        inset calc(var(--shadow-x) * 0.08) calc(var(--shadow-y) * 0.08) 18px rgba(85, 19, 0, 0.22);
     }
 
     .button:not(.button--primary) {
-      box-shadow: inset 0 0 0 1px var(--button-secondary-ring), calc(var(--shadow-x) * 0.45) calc(var(--shadow-y) * 0.45) 28px rgba(0, 0, 0, 0.34);
+      box-shadow:
+        inset 0 0 0 1px var(--button-secondary-ring),
+        inset calc(var(--shadow-x) * -0.06) calc(var(--shadow-y) * -0.06) 14px var(--control-highlight),
+        inset calc(var(--shadow-x) * 0.08) calc(var(--shadow-y) * 0.08) 18px rgba(0, 0, 0, 0.22),
+        calc(var(--shadow-x) * 0.45) calc(var(--shadow-y) * 0.45) 28px var(--button-primary-shadow);
     }
 
     .session-status {
@@ -312,7 +348,7 @@
       background:
         linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 38%),
         linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.12), transparent 48%),
-        linear-gradient(145deg, rgba(33, 52, 79, 0.98), rgba(14, 25, 40, 0.98));
+        linear-gradient(145deg, rgba(34, 47, 66, 0.86), rgba(9, 16, 28, 0.94));
       backdrop-filter: blur(18px) saturate(1.25);
       box-shadow:
         inset 0 0 0 1px rgba(255, 255, 255, 0.12),
@@ -379,33 +415,18 @@
 
     .profile-card {
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       display: grid;
       gap: 16px;
-      padding: 18px;
-      border-radius: 26px;
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 42%),
-        linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.08), transparent 54%),
-        linear-gradient(180deg, rgba(255, 106, 0, 0.12), transparent 38%),
-        linear-gradient(180deg, rgba(20, 34, 55, 0.98), rgba(5, 13, 24, 0.98));
-      backdrop-filter: blur(20px) saturate(1.3);
-      box-shadow:
-        inset 0 0 0 1px rgba(255, 177, 59, 0.33),
-        inset 0 0 0 2px rgba(255, 255, 255, 0.04),
-        calc(var(--shadow-x) * 0.58) calc(var(--shadow-y) * 0.58) 44px rgba(0, 0, 0, 0.42);
+      padding: 0;
+      border-radius: 0;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
     }
 
     .profile-card::before {
-      content: "";
-      position: absolute;
-      inset: 16px;
-      border-radius: 24px;
-      background:
-        linear-gradient(145deg, rgba(255, 255, 255, 0.1), transparent 34%),
-        linear-gradient(180deg, rgba(21, 37, 58, 0.86), rgba(4, 12, 22, 0.72));
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-      pointer-events: none;
+      content: none;
     }
 
     .profile-card__hero,
@@ -422,21 +443,13 @@
       align-items: center;
       gap: 18px;
       padding: 22px 18px;
-      border-radius: 24px;
-      background:
-        linear-gradient(90deg, rgba(4, 12, 22, 0.38), rgba(15, 30, 48, 0.84)),
-        url("./assets/profile-avatar.png") center / cover no-repeat;
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
     }
 
     .profile-card__hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: linear-gradient(90deg, rgba(5, 13, 24, 0.18), rgba(5, 13, 24, 0.84));
-      backdrop-filter: blur(1px);
-      pointer-events: none;
+      content: none;
     }
 
     .profile-card__avatar,
@@ -490,10 +503,7 @@
       gap: 12px;
       padding: 18px;
       border-radius: 22px;
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 40%),
-        linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.08), transparent 58%),
-        linear-gradient(145deg, rgba(18, 34, 54, 0.98), rgba(6, 17, 30, 0.98));
+      background: var(--info-square-bg);
       backdrop-filter: blur(14px) saturate(1.18);
       box-shadow:
         inset 0 0 0 1px rgba(106, 154, 196, 0.28),
@@ -679,6 +689,7 @@
     }
 
     .hero-card {
+      position: relative;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       min-height: 380px;
@@ -687,15 +698,13 @@
       color: var(--ink);
       text-decoration: none;
       background: linear-gradient(145deg, #2d385c, #243052);
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.17), transparent 38%),
-        linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.1), transparent 56%),
-        linear-gradient(145deg, rgba(47, 56, 70, 0.76), rgba(12, 17, 27, 0.92));
+      background: var(--info-square-bg);
       backdrop-filter: blur(18px) saturate(1.3);
       box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.13),
+        inset 0 0 0 1px var(--control-warm-rim),
+        inset calc(var(--shadow-x) * -0.08) calc(var(--shadow-y) * -0.08) 22px var(--control-highlight),
         inset 0 -22px 38px rgba(0, 0, 0, 0.18),
-        calc(var(--shadow-x) * 0.7) calc(var(--shadow-y) * 0.7) 46px rgba(0, 0, 0, 0.32);
+        calc(var(--shadow-x) * 0.7) calc(var(--shadow-y) * 0.7) 46px var(--control-shadow);
       transition: transform 160ms ease, filter 160ms ease;
     }
 
@@ -707,6 +716,8 @@
     }
 
     .hero-copy {
+      position: relative;
+      z-index: 1;
       display: grid;
       align-content: center;
       gap: 18px;
@@ -754,6 +765,7 @@
     }
 
     .game-tile {
+      position: relative;
       display: grid;
       gap: 12px;
       min-width: 0;
@@ -763,34 +775,31 @@
     }
 
     .thumb {
+      position: relative;
+      overflow: hidden;
       aspect-ratio: 1 / 0.86;
       border-radius: 22px;
       background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.16), transparent 42%),
-        linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.11), transparent 56%),
-        linear-gradient(145deg, rgba(58, 65, 76, 0.82), rgba(14, 20, 31, 0.94));
+        var(--info-square-bg);
       backdrop-filter: blur(16px) saturate(1.25);
       box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+        inset 0 0 0 1px var(--control-warm-rim),
+        inset calc(var(--shadow-x) * -0.06) calc(var(--shadow-y) * -0.06) 20px var(--control-highlight),
         inset 0 -18px 30px rgba(0, 0, 0, 0.2),
-        calc(var(--shadow-x) * 0.32) calc(var(--shadow-y) * 0.32) 22px rgba(0, 0, 0, 0.22);
+        calc(var(--shadow-x) * 0.32) calc(var(--shadow-y) * 0.32) 22px var(--control-shadow);
     }
 
     .game-tile:nth-child(2) .thumb {
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 42%),
-        linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.12), transparent 56%),
-        linear-gradient(145deg, rgba(63, 71, 84, 0.82), rgba(15, 21, 32, 0.94));
+      background: var(--info-square-bg);
     }
 
     .game-tile:nth-child(3) .thumb {
-      background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.14), transparent 42%),
-        linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.1), transparent 56%),
-        linear-gradient(145deg, rgba(55, 63, 77, 0.82), rgba(13, 19, 30, 0.94));
+      background: var(--info-square-bg);
     }
 
     .game-tile strong {
+      position: relative;
+      z-index: 1;
       font-size: 22px;
       font-weight: 950;
       line-height: 0.98;
@@ -823,6 +832,8 @@
     }
 
     .quick-item {
+      position: relative;
+      overflow: hidden;
       display: grid;
       grid-template-columns: 48px minmax(0, 1fr) auto;
       align-items: center;
@@ -833,18 +844,19 @@
       color: var(--ink);
       text-decoration: none;
       background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.13), transparent 42%),
-        linear-gradient(var(--shine-angle), rgba(255, 255, 255, 0.09), transparent 56%),
-        linear-gradient(145deg, rgba(30, 43, 62, 0.82), rgba(10, 17, 29, 0.94));
+        var(--info-square-bg);
       backdrop-filter: blur(16px) saturate(1.22);
       box-shadow:
-        calc(var(--shadow-x) * 0.38) calc(var(--shadow-y) * 0.38) 26px rgba(0, 0, 0, 0.25),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.11),
+        calc(var(--shadow-x) * 0.38) calc(var(--shadow-y) * 0.38) 26px var(--control-shadow),
+        inset 0 0 0 1px var(--control-warm-rim),
+        inset calc(var(--shadow-x) * -0.06) calc(var(--shadow-y) * -0.06) 18px var(--control-highlight),
         inset 0 -14px 26px rgba(0, 0, 0, 0.16);
       transition: transform 160ms ease, filter 160ms ease;
     }
 
     .quick-icon {
+      position: relative;
+      z-index: 1;
       width: 48px;
       height: 48px;
       display: grid;
@@ -852,27 +864,31 @@
       border-radius: 16px;
       background:
         linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent 44%),
-        linear-gradient(145deg, rgba(255, 106, 0, 0.26), rgba(17, 25, 38, 0.96));
-      color: var(--gold);
+        linear-gradient(145deg, rgba(255, 194, 74, 0.36), rgba(255, 61, 0, 0.72));
+      color: #160701;
       font-size: 18px;
       font-weight: 950;
       box-shadow: inset 0 0 0 1px rgba(255, 177, 59, 0.28);
     }
 
     .quick-item strong {
+      position: relative;
+      z-index: 1;
       font-size: 20px;
       font-weight: 950;
       line-height: 1;
     }
 
     .quick-arrow {
+      position: relative;
+      z-index: 1;
       width: 34px;
       height: 34px;
       display: grid;
       place-items: center;
       border-radius: 50%;
-      background: #343944;
-      color: var(--ink);
+      background: rgba(22, 7, 1, 0.18);
+      color: #160701;
       font-size: 20px;
       font-weight: 950;
     }
@@ -885,10 +901,10 @@
       padding: 28px;
       border-radius: 28px;
       background:
-        radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 255, 255, 0.14), transparent 30%),
-        radial-gradient(circle at 76% 24%, rgba(255, 194, 74, 0.34), transparent 28%),
-        linear-gradient(145deg, #ff6a00, #3a3030);
-      box-shadow: calc(var(--shadow-x) * 0.5) calc(var(--shadow-y) * 0.5) 34px rgba(0, 0, 0, 0.28), 0 0 30px rgba(255, 106, 0, 0.18);
+        var(--info-square-bg);
+      box-shadow:
+        calc(var(--shadow-x) * 0.5) calc(var(--shadow-y) * 0.5) 34px var(--control-shadow),
+        inset 0 0 0 1px var(--control-warm-rim);
     }
 
     .rewards strong {
@@ -1661,6 +1677,10 @@
       root.style.setProperty('--surface-glint', mixRgba([255, 255, 255, 0.14], [255, 177, 59, 0.2], nightAmount));
       root.style.setProperty('--surface-shadow', mixRgba([0, 0, 0, 0.3], [0, 0, 0, 0.56], nightAmount));
       root.style.setProperty('--button-shine-opacity', (0.72 - (nightAmount * 0.5)).toFixed(2));
+      root.style.setProperty('--control-highlight', mixRgba([255, 255, 255, 0.24], [255, 177, 59, 0.13], nightAmount));
+      root.style.setProperty('--control-glare', mixRgba([255, 255, 255, 0.2], [255, 177, 59, 0.08], nightAmount));
+      root.style.setProperty('--control-warm-rim', mixRgba([255, 255, 255, 0.18], [255, 106, 0, 0.36], nightAmount));
+      root.style.setProperty('--control-shadow', mixRgba([0, 0, 0, 0.26], [0, 0, 0, 0.48], nightAmount));
       document.body.dataset.themeTime = nightAmount >= 0.75 ? 'night' : nightAmount <= 0.2 ? 'day' : 'sunset';
       updateTimeControlLabel(hour);
     }
