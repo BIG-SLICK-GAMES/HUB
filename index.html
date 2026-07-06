@@ -223,6 +223,7 @@
     .button::before,
     .hero-card::before,
     .thumb::before,
+    .profile-stat::before,
     .quick-item::before {
       content: "";
       position: absolute;
@@ -285,6 +286,18 @@
         inset calc(var(--shadow-x) * -0.06) calc(var(--shadow-y) * -0.06) 14px var(--control-highlight),
         inset calc(var(--shadow-x) * 0.08) calc(var(--shadow-y) * 0.08) 18px rgba(0, 0, 0, 0.22),
         calc(var(--shadow-x) * 0.45) calc(var(--shadow-y) * 0.45) 28px var(--button-primary-shadow);
+    }
+
+    .auth-actions .button::before,
+    .auth-actions .button::after {
+      content: none;
+      animation: none;
+    }
+
+    .auth-actions .button {
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 177, 59, 0.34),
+        calc(var(--shadow-x) * 0.36) calc(var(--shadow-y) * 0.36) 22px var(--button-primary-shadow);
     }
 
     .session-status {
@@ -497,7 +510,10 @@
     }
 
     .profile-stat {
-      min-height: 104px;
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1 / 0.86;
+      min-height: 0;
       display: grid;
       align-content: center;
       gap: 12px;
@@ -512,6 +528,14 @@
 
     .profile-stat--wide {
       grid-column: 1 / -1;
+      aspect-ratio: auto;
+      min-height: 104px;
+    }
+
+    .profile-stat span,
+    .profile-stat strong {
+      position: relative;
+      z-index: 1;
     }
 
     .profile-stat strong {
@@ -1122,8 +1146,8 @@
       }
 
       .profile-card {
-        padding: 14px;
-        border-radius: 22px;
+        padding: 0;
+        border-radius: 0;
       }
 
       .profile-card::before {
@@ -1158,9 +1182,15 @@
       }
 
       .profile-stat {
-        min-height: 88px;
+        aspect-ratio: 1 / 0.86;
+        min-height: 0;
         padding: 14px;
         border-radius: 18px;
+      }
+
+      .profile-stat--wide {
+        aspect-ratio: auto;
+        min-height: 88px;
       }
 
       .profile-stat span {
