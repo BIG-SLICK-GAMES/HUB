@@ -782,7 +782,7 @@
       object-fit: contain;
       opacity: 1;
       transform-origin: 50% 58%;
-      animation: selectorIdle3d 5s ease-in-out infinite;
+      animation: selectorIdleFloat 7s ease-in-out infinite;
     }
 
     .selector-rotator {
@@ -807,102 +807,24 @@
       animation-delay: 20s;
     }
 
-    .selector-slide:nth-child(2) .selector-banner {
-      animation-delay: -1.1s;
-    }
-
-    .selector-slide--racing .selector-banner {
-      animation: selectorRunAtCamera 5s cubic-bezier(0.2, 0.72, 0.24, 1) infinite;
-      transform-origin: 66% 70%;
-    }
-
-    .selector-slide--rewards .selector-banner {
-      animation: selectorWinnerPunch 5s ease-in-out infinite;
-      transform-origin: 52% 62%;
-    }
-
-    .selector-slide--rewards::before,
-    .selector-slide--rewards::after {
-      content: "";
-      position: absolute;
-      inset: 2% 10% auto;
-      height: 46%;
-      pointer-events: none;
-      opacity: 0;
-      background:
-        linear-gradient(120deg, transparent 0 16%, rgba(255, 177, 59, 0.9) 17% 18%, transparent 19% 36%, rgba(255, 106, 0, 0.85) 37% 38%, transparent 39% 58%, rgba(110, 190, 255, 0.7) 59% 60%, transparent 61%),
-        linear-gradient(60deg, transparent 0 22%, rgba(255, 255, 255, 0.8) 23% 24%, transparent 25% 48%, rgba(255, 61, 0, 0.8) 49% 50%, transparent 51%);
-      animation: selectorStreamers 5s ease-in-out infinite;
-    }
-
-    .selector-slide--rewards::after {
-      inset: 6% 8% auto 18%;
-      transform: scaleX(-1);
-      animation-delay: 0.35s;
-    }
-
     @keyframes selectorSlideCycle {
       0%, 13% {
         opacity: 0;
-        transform: translateY(10px) scale(0.97);
       }
       18%, 32% {
         opacity: 1;
-        transform: translateY(0) scale(1);
       }
       37%, 100% {
         opacity: 0;
-        transform: translateY(-10px) scale(0.98);
       }
     }
 
-    @keyframes selectorIdle3d {
+    @keyframes selectorIdleFloat {
       0%, 100% {
-        transform: translateY(0) rotateX(0deg) rotateY(-1.4deg) scale(1);
+        transform: translateY(0) scale(1);
       }
       50% {
-        transform: translateY(-10px) rotateX(1.2deg) rotateY(1.6deg) scale(1.018);
-      }
-    }
-
-    @keyframes selectorRunAtCamera {
-      0%, 100% {
-        transform: translateY(10px) translateZ(0) rotateX(0deg) scale(0.94);
-        filter: saturate(1);
-      }
-      46% {
-        transform: translateY(-8px) translateZ(60px) rotateX(2deg) scale(1.1);
-        filter: saturate(1.18) brightness(1.08);
-      }
-      72% {
-        transform: translateY(-2px) translateZ(30px) rotateX(0.5deg) scale(1.04);
-      }
-    }
-
-    @keyframes selectorWinnerPunch {
-      0%, 100% {
-        transform: translateY(4px) rotateZ(-0.5deg) scale(0.98);
-      }
-      35% {
-        transform: translateY(-18px) rotateZ(1deg) scale(1.06);
-      }
-      58% {
-        transform: translateY(-8px) rotateZ(0deg) scale(1.025);
-      }
-    }
-
-    @keyframes selectorStreamers {
-      0%, 20% {
-        opacity: 0;
-        transform: translateY(-24px) scaleY(0.6);
-      }
-      36%, 70% {
-        opacity: 0.92;
-        transform: translateY(28px) scaleY(1);
-      }
-      100% {
-        opacity: 0;
-        transform: translateY(82px) scaleY(1.2);
+        transform: translateY(-6px) scale(1.01);
       }
     }
 
@@ -1228,6 +1150,14 @@
         grid-template-columns: minmax(0, 1fr);
       }
 
+      .hero-card--floating {
+        min-height: clamp(260px, 48vw, 360px);
+      }
+
+      .selector-rotator {
+        inset: -4% -6%;
+      }
+
       .hero-logo-wrap {
         min-height: 220px;
       }
@@ -1442,6 +1372,14 @@
       .hero-card {
         min-height: auto;
         border-radius: 22px;
+      }
+
+      .hero-card--floating {
+        min-height: clamp(190px, 62vw, 290px);
+      }
+
+      .selector-rotator {
+        inset: -2% -10%;
       }
 
       .hero-copy {
