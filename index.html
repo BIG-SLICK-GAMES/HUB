@@ -7,87 +7,93 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #060a10;
-      --panel: rgba(8, 15, 23, 0.78);
-      --ink: #f5f7fb;
-      --muted: #9eabb8;
-      --line: transparent;
+      --bg: #05080d;
+      --bg-2: #0c1520;
+      --steel: #172433;
+      --steel-2: #223448;
+      --ink: #f7f4ec;
+      --muted: #aeb8c4;
       --orange: #ff6a00;
-      --orange-strong: #ff3d00;
-      --cyan: #7dc8e8;
-      --steel: #263442;
-      --steel-dark: #09111a;
-      --shadow: 0 26px 90px rgba(0, 0, 0, 0.42);
+      --orange-2: #ff3d00;
+      --gold: #ffc24a;
+      --green: #47e28f;
+      --line: rgba(255, 255, 255, 0.11);
+      --panel: rgba(6, 12, 20, 0.58);
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html,
     body {
+      min-height: 100%;
       margin: 0;
+    }
+
+    body {
       min-height: 100vh;
       min-height: 100svh;
+      overflow-x: hidden;
       font-family: Arial, Helvetica, sans-serif;
       color: var(--ink);
-      overflow-x: hidden;
-      overflow-y: auto;
       background:
-        radial-gradient(circle at 18% 18%, rgba(56, 84, 108, 0.45), transparent 30%),
-        radial-gradient(circle at 84% 22%, rgba(255, 106, 0, 0.16), transparent 24%),
-        linear-gradient(145deg, #03070c 0%, #111a24 42%, #263342 72%, #080d14 100%);
+        radial-gradient(circle at 50% -10%, rgba(255, 106, 0, 0.18), transparent 34%),
+        radial-gradient(circle at 12% 24%, rgba(80, 112, 144, 0.34), transparent 36%),
+        linear-gradient(145deg, #04070c 0%, #0b121b 42%, #172536 72%, #05080d 100%);
     }
 
     body::before,
     body::after {
       content: "";
       position: fixed;
-      inset: -22%;
+      inset: 0;
       z-index: -2;
       pointer-events: none;
     }
 
     body::before {
       background:
-        repeating-linear-gradient(42deg, rgba(183, 207, 226, 0.13) 0 1px, transparent 1px 34px),
-        repeating-linear-gradient(138deg, rgba(0, 0, 0, 0.28) 0 1px, transparent 1px 36px),
-        linear-gradient(110deg, rgba(9, 17, 27, 0.88), rgba(43, 60, 76, 0.5), rgba(8, 13, 21, 0.82));
-      transform: rotate(-1deg) scale(1.1);
+        linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.035) 42%, rgba(255, 194, 74, 0.16) 50%, rgba(255, 255, 255, 0.035) 58%, transparent 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 22%, rgba(0, 0, 0, 0.2) 100%);
+      transform: translateX(-70%);
+      animation: casinoLightSweep 8s ease-in-out infinite;
     }
 
     body::after {
-      z-index: -1;
+      z-index: -3;
       background:
-        linear-gradient(112deg, transparent 0%, rgba(255, 255, 255, 0.02) 22%, rgba(172, 206, 232, 0.18) 32%, rgba(255, 106, 0, 0.22) 39%, rgba(255, 255, 255, 0.08) 46%, transparent 64%),
-        linear-gradient(70deg, transparent 0%, rgba(255, 255, 255, 0.04) 44%, rgba(125, 200, 232, 0.16) 50%, transparent 60%);
-      mix-blend-mode: screen;
-      animation: steelShimmer 6.5s linear infinite;
+        radial-gradient(ellipse at center, rgba(255, 255, 255, 0.06), transparent 58%),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.035));
     }
 
-    @keyframes steelShimmer {
-      0% {
-        transform: translate3d(-18%, -7%, 0) rotate(-5deg);
-        opacity: 0.36;
+    @keyframes casinoLightSweep {
+      0%, 18% {
+        transform: translateX(-72%);
+        opacity: 0;
       }
-      50% {
-        opacity: 0.82;
+      42% {
+        opacity: 0.9;
       }
-      100% {
-        transform: translate3d(18%, 7%, 0) rotate(-5deg);
-        opacity: 0.36;
+      70%, 100% {
+        transform: translateX(72%);
+        opacity: 0;
       }
     }
 
-    a,
-    button {
-      font: inherit;
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     .page {
       display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
       min-height: 100vh;
       min-height: 100svh;
-      grid-template-rows: auto minmax(0, 1fr) auto;
+      width: min(100%, 1480px);
+      margin: 0 auto;
+      padding: 0 clamp(16px, 4vw, 58px);
     }
 
     .topbar {
@@ -95,87 +101,90 @@
       align-items: center;
       justify-content: space-between;
       gap: 18px;
-      padding: 22px clamp(18px, 5vw, 70px);
-      border: 0;
-      background: transparent;
+      min-height: 86px;
+      padding: 18px 0;
     }
 
     .brand {
       display: grid;
       gap: 3px;
-      text-decoration: none;
-      color: inherit;
     }
 
     .brand strong {
-      font-size: clamp(22px, 3vw, 34px);
-      font-weight: 900;
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 950;
       letter-spacing: 0;
-      line-height: 1;
+      line-height: 0.95;
       text-transform: uppercase;
     }
 
     .brand span {
-      color: var(--muted);
+      color: var(--gold);
       font-size: 13px;
-      font-weight: 700;
-      line-height: 1.2;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
     }
 
-    .nav-actions {
+    .nav-actions,
+    .hero-actions,
+    .dock-actions {
       display: flex;
       align-items: center;
       gap: 10px;
       flex-wrap: wrap;
-      justify-content: flex-end;
     }
 
     .session-status {
       display: inline-flex;
       align-items: center;
       min-height: 42px;
-      padding: 10px 12px;
-      border: 0;
+      padding: 11px 13px 10px;
       border-radius: 6px;
-      background: rgba(69, 226, 138, 0.1);
-      color: #45e28a;
+      background: rgba(71, 226, 143, 0.1);
+      color: var(--green);
       font-size: 13px;
       font-weight: 900;
       line-height: 1;
       text-transform: uppercase;
+      box-shadow: inset 0 0 0 1px rgba(71, 226, 143, 0.22);
     }
 
     .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 42px;
-      padding: 11px 16px 10px;
+      min-height: 44px;
+      min-width: 132px;
+      padding: 12px 18px 11px;
       border: 0;
       border-radius: 6px;
       color: var(--ink);
       font-size: 14px;
-      font-weight: 900;
+      font-weight: 950;
       line-height: 1;
-      text-decoration: none;
+      text-align: center;
       text-transform: uppercase;
-      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+      transition: transform 140ms ease, filter 140ms ease;
+      white-space: nowrap;
     }
 
     .button:hover {
       transform: translateY(-1px);
+      filter: brightness(1.08);
     }
 
     .button--primary {
-      border-color: transparent;
-      background: linear-gradient(180deg, var(--orange), var(--orange-strong));
-      color: #120701;
-      box-shadow: 0 16px 34px rgba(255, 61, 0, 0.34);
+      background: linear-gradient(180deg, var(--orange), var(--orange-2));
+      color: #150702;
+      box-shadow: 0 16px 32px rgba(255, 61, 0, 0.26);
     }
 
     .button--secondary {
-      background: rgba(8, 16, 25, 0.42);
-      box-shadow: inset 0 0 0 1px rgba(125, 200, 232, 0.12);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--ink);
+      box-shadow: inset 0 0 0 1px var(--line);
     }
 
     [hidden] {
@@ -184,166 +193,226 @@
 
     .hero {
       display: grid;
-      align-content: center;
-      gap: 34px;
-      width: min(1160px, calc(100vw - 36px));
-      margin: 0 auto;
-      padding: clamp(24px, 7vh, 70px) 0;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.04fr) minmax(320px, 0.82fr);
-      gap: clamp(22px, 5vw, 56px);
+      grid-template-columns: minmax(0, 1fr) minmax(330px, 0.68fr);
       align-items: center;
+      gap: clamp(28px, 6vw, 86px);
+      min-height: 0;
+      padding: clamp(18px, 4vh, 54px) 0 clamp(18px, 4vh, 46px);
     }
 
-    .copy {
+    .hero-copy {
       display: grid;
-      gap: 20px;
+      gap: 19px;
+      align-content: center;
+      min-width: 0;
     }
 
     .eyebrow {
-      color: var(--cyan);
+      color: var(--gold);
       font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0.16em;
+      font-weight: 950;
+      letter-spacing: 0.18em;
       line-height: 1;
       text-transform: uppercase;
     }
 
     h1 {
-      max-width: 760px;
+      max-width: 820px;
       margin: 0;
-      font-size: clamp(54px, 9vw, 112px);
+      font-size: clamp(56px, 8vw, 118px);
       font-weight: 950;
       letter-spacing: 0;
-      line-height: 0.88;
+      line-height: 0.86;
       text-transform: uppercase;
+      text-shadow: 0 18px 46px rgba(0, 0, 0, 0.42);
     }
 
     .lead {
-      max-width: 640px;
+      max-width: 680px;
       margin: 0;
-      color: rgba(245, 247, 251, 0.78);
-      font-size: clamp(18px, 2.2vw, 24px);
+      color: rgba(247, 244, 236, 0.76);
+      font-size: clamp(18px, 2vw, 24px);
       font-weight: 700;
-      line-height: 1.32;
-    }
-
-    .cta-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
+      line-height: 1.34;
     }
 
     .auth-note {
-      max-width: 640px;
+      max-width: 650px;
       margin: 0;
-      color: rgba(245, 247, 251, 0.58);
+      color: rgba(247, 244, 236, 0.52);
       font-size: 14px;
       font-weight: 700;
       line-height: 1.35;
     }
 
-    .game-showcase {
+    .showcase {
       display: grid;
-      gap: 18px;
       justify-items: start;
+      align-content: center;
+      gap: 18px;
       min-width: 0;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      box-shadow: none;
     }
 
-    .game-showcase__banner {
+    .showcase img {
+      display: block;
       width: min(100%, 560px);
       height: auto;
-      display: block;
       filter:
-        drop-shadow(0 26px 42px rgba(0, 0, 0, 0.52))
-        drop-shadow(0 0 22px rgba(255, 106, 0, 0.22));
-      transform: translateZ(0);
+        drop-shadow(0 26px 42px rgba(0, 0, 0, 0.56))
+        drop-shadow(0 0 26px rgba(255, 106, 0, 0.2));
     }
 
-    .game-showcase__meta {
+    .showcase-meta {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
-      flex-wrap: wrap;
       gap: 12px;
+      flex-wrap: wrap;
       color: var(--muted);
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
       line-height: 1;
       text-transform: uppercase;
     }
 
     .status {
-      color: #35ef94;
+      color: var(--green);
     }
 
-    .game-showcase h2 {
-      margin: 0;
-      font-size: clamp(32px, 5vw, 54px);
-      font-weight: 950;
-      letter-spacing: 0;
-      line-height: 0.92;
-      text-transform: uppercase;
-    }
-
-    .game-showcase p {
+    .showcase p {
       max-width: 480px;
       margin: 0;
-      color: rgba(245, 247, 251, 0.7);
+      color: rgba(247, 244, 236, 0.66);
       font-size: 16px;
       font-weight: 700;
       line-height: 1.35;
     }
 
-    .footer {
-      padding: 20px clamp(18px, 5vw, 70px) 26px;
-      color: rgba(245, 247, 251, 0.48);
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.3;
-      border: 0;
-      background: transparent;
+    .dock {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 16px;
+      min-height: 82px;
+      padding: 14px 0 max(16px, env(safe-area-inset-bottom));
+      background:
+        linear-gradient(90deg, rgba(255, 106, 0, 0.11), transparent 30%, transparent 70%, rgba(255, 194, 74, 0.1)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(0, 0, 0, 0));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
     }
 
-    @media (max-width: 840px) {
-      body {
-        overflow-y: auto;
+    .dock-title {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .dock-title strong {
+      font-size: 16px;
+      font-weight: 950;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .dock-title span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.25;
+    }
+
+    @media (max-width: 900px) {
+      .page {
+        padding: 0 18px;
       }
 
       .topbar {
         align-items: flex-start;
         flex-direction: column;
+        min-height: 0;
       }
 
       .nav-actions {
         width: 100%;
-        justify-content: stretch;
       }
 
-      .nav-actions .button {
+      .nav-actions .button,
+      .nav-actions .session-status {
         flex: 1 1 0;
       }
 
-      .hero-grid {
+      .hero {
         grid-template-columns: minmax(0, 1fr);
+        align-content: start;
+        padding-top: 18px;
+        gap: 28px;
+      }
+
+      .showcase {
+        justify-items: center;
+      }
+
+      .showcase p,
+      .showcase-meta {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .dock {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .dock-actions .button {
+        flex: 1 1 0;
       }
     }
 
     @media (max-width: 520px) {
-      .cta-row .button {
-        width: 100%;
+      .page {
+        padding: 0 14px;
+      }
+
+      .brand strong {
+        font-size: 24px;
+      }
+
+      .brand span {
+        font-size: 11px;
       }
 
       h1 {
-        font-size: clamp(44px, 15vw, 66px);
+        font-size: clamp(38px, 13vw, 56px);
+        line-height: 0.9;
+      }
+
+      .lead {
+        font-size: 16px;
+      }
+
+      .auth-note,
+      .showcase p,
+      .dock-title span {
+        font-size: 13px;
+      }
+
+      .showcase img {
+        width: min(100%, 360px);
+      }
+
+      .button,
+      .session-status {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .hero-actions .button,
+      .dock-actions .button,
+      .nav-actions .button {
+        width: 100%;
+      }
+
+      .dock {
+        min-height: 0;
+        padding-top: 12px;
       }
     }
   </style>
@@ -363,36 +432,39 @@
       </nav>
     </header>
 
-    <main class="hero">
-      <section class="hero-grid" aria-label="Big Slick Games 21 Hold'em gateway">
-        <div class="copy">
-          <span class="eyebrow">One login for Big Slick Games and 21 Hold'em</span>
-          <h1>Play 21 Hold'em through Big Slick Games.</h1>
-          <p class="lead">Big Slick Games is the public gateway. All sign in, registration, verification, bankroll, and profile access is handled by the 21 Hold'em login system.</p>
-          <div class="cta-row">
-            <a id="playLink" class="button button--primary" href="#">Play 21 Hold'em</a>
-            <a id="loginHeroLink" class="button button--secondary signed-out" href="#">Sign in with 21 Hold'em</a>
-            <a id="accountHeroLink" class="button button--secondary signed-in" href="#" hidden>Continue signed in</a>
-          </div>
-          <p class="auth-note">This website does not create or store separate web accounts. If you are already signed into 21 Hold'em on this host, the Hub uses that same session.</p>
+    <main class="hero" aria-label="Big Slick Games 21 Hold'em gateway">
+      <section class="hero-copy">
+        <span class="eyebrow">One login for Big Slick Games and 21 Hold'em</span>
+        <h1>Modern casino action starts here.</h1>
+        <p class="lead">Big Slick Games is the public gateway. Account access, bankroll, profile, registration, and verification all run through the 21 Hold'em login system.</p>
+        <div class="hero-actions">
+          <a id="playLink" class="button button--primary" href="#">Play 21 Hold'em</a>
+          <a id="loginHeroLink" class="button button--secondary signed-out" href="#">Sign in</a>
+          <a id="accountHeroLink" class="button button--secondary signed-in" href="#" hidden>Continue signed in</a>
         </div>
-
-        <aside class="game-showcase" aria-label="Featured game">
-          <img class="game-showcase__banner" src="./assets/21-holdem-banner.png" alt="21 Hold'em">
-          <div class="game-showcase__meta">
-            <span>Featured title</span>
-            <span class="status">Docker online</span>
-          </div>
-          <h2>21 Hold'em</h2>
-          <p>Poker table pressure, blackjack totals, shared community cards, and account access from the existing 21 Hold'em auth system.</p>
-          <a id="registerCardLink" class="button button--primary signed-out" href="#">Create account</a>
-          <a id="accountCardLink" class="button button--primary signed-in" href="#" hidden>Enter game</a>
-        </aside>
+        <p class="auth-note">There is no separate Hub account. Sign in once with 21 Hold'em and the Hub follows that same session on this host.</p>
       </section>
+
+      <aside class="showcase" aria-label="Featured game">
+        <img src="./assets/21-holdem-banner.png" alt="21 Hold'em">
+        <div class="showcase-meta">
+          <span>Featured table game</span>
+          <span class="status">Online</span>
+        </div>
+        <p>Poker table pressure, blackjack totals, shared community cards, and fast account access through the existing 21 Hold'em auth system.</p>
+      </aside>
     </main>
 
-    <footer class="footer">
-      Big Slick Games routes account actions to 21 Hold'em. No Big Slick Games website authentication is enabled here.
+    <footer class="dock" aria-label="Big Slick Games site controls">
+      <div class="dock-title">
+        <strong>Big Slick Games Hub</strong>
+        <span>Public gateway, one 21 Hold'em login, no separate website auth.</span>
+      </div>
+      <nav class="dock-actions" aria-label="Quick actions">
+        <a id="registerDockLink" class="button button--primary signed-out" href="#">Create account</a>
+        <a id="loginDockLink" class="button button--secondary signed-out" href="#">Sign in</a>
+        <a id="accountDockLink" class="button button--primary signed-in" href="#" hidden>Enter game</a>
+      </nav>
     </footer>
   </div>
 
@@ -456,11 +528,12 @@
     const links = {
       loginTopLink: '/login',
       loginHeroLink: '/login',
+      loginDockLink: '/login',
       registerTopLink: '/register',
-      registerCardLink: '/register',
+      registerDockLink: '/register',
       accountTopLink: '/',
       accountHeroLink: '/',
-      accountCardLink: '/',
+      accountDockLink: '/',
       playLink: '/',
     };
 
