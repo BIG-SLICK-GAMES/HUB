@@ -7,18 +7,20 @@
   <style>
     :root {
       color-scheme: dark;
-      --bg: #05080d;
-      --bg-2: #0c1520;
-      --steel: #172433;
-      --steel-2: #223448;
-      --ink: #f7f4ec;
-      --muted: #aeb8c4;
+      --page: #222c3a;
+      --shell: #171f33;
+      --shell-2: #1d2740;
+      --panel: #24304d;
+      --panel-2: #2b3658;
+      --ink: #ffffff;
+      --muted: #7f8aa7;
+      --soft: #aeb8d2;
       --orange: #ff6a00;
       --orange-2: #ff3d00;
-      --gold: #ffc24a;
-      --green: #47e28f;
-      --line: rgba(255, 255, 255, 0.11);
-      --panel: rgba(6, 12, 20, 0.58);
+      --gold: #ffc15a;
+      --purple: #8c6dff;
+      --green: #46dfa0;
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.34);
     }
 
     * {
@@ -38,47 +40,28 @@
       font-family: Arial, Helvetica, sans-serif;
       color: var(--ink);
       background:
-        radial-gradient(circle at 50% -10%, rgba(255, 106, 0, 0.18), transparent 34%),
-        radial-gradient(circle at 12% 24%, rgba(80, 112, 144, 0.34), transparent 36%),
-        linear-gradient(145deg, #04070c 0%, #0b121b 42%, #172536 72%, #05080d 100%);
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      pointer-events: none;
+        radial-gradient(circle at 22% 18%, rgba(117, 139, 174, 0.24), transparent 34%),
+        radial-gradient(circle at 86% 78%, rgba(255, 106, 0, 0.15), transparent 28%),
+        linear-gradient(145deg, #293544 0%, #1c2533 52%, #263241 100%);
     }
 
     body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
       background:
-        linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.035) 42%, rgba(255, 194, 74, 0.16) 50%, rgba(255, 255, 255, 0.035) 58%, transparent 100%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 22%, rgba(0, 0, 0, 0.2) 100%);
-      transform: translateX(-70%);
-      animation: casinoLightSweep 8s ease-in-out infinite;
+        linear-gradient(115deg, transparent 0%, rgba(255, 255, 255, 0.04) 38%, rgba(255, 255, 255, 0.12) 50%, rgba(255, 106, 0, 0.1) 55%, transparent 70%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 35%);
+      opacity: 0.8;
+      transform: translateX(-62%);
+      animation: sweep 8s ease-in-out infinite;
     }
 
-    body::after {
-      z-index: -3;
-      background:
-        radial-gradient(ellipse at center, rgba(255, 255, 255, 0.06), transparent 58%),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.035), transparent 18%, transparent 82%, rgba(255, 255, 255, 0.035));
-    }
-
-    @keyframes casinoLightSweep {
-      0%, 18% {
-        transform: translateX(-72%);
-        opacity: 0;
-      }
-      42% {
-        opacity: 0.9;
-      }
-      70%, 100% {
-        transform: translateX(72%);
-        opacity: 0;
-      }
+    @keyframes sweep {
+      0%, 18% { transform: translateX(-66%); opacity: 0; }
+      42% { opacity: 0.72; }
+      70%, 100% { transform: translateX(66%); opacity: 0; }
     }
 
     a {
@@ -86,85 +69,104 @@
       text-decoration: none;
     }
 
-    .page {
+    .app {
+      position: relative;
+      z-index: 1;
+      width: min(100% - 28px, 1620px);
+      min-height: calc(100vh - 56px);
+      min-height: calc(100svh - 56px);
+      margin: 28px auto;
       display: grid;
+      grid-template-columns: 300px minmax(0, 1fr) 330px;
       grid-template-rows: auto minmax(0, 1fr) auto;
-      min-height: 100vh;
-      min-height: 100svh;
-      width: min(100%, 1480px);
-      margin: 0 auto;
-      padding: 0 clamp(16px, 4vw, 58px);
+      gap: 22px 28px;
+      padding: 28px;
+      border-radius: 34px;
+      background:
+        radial-gradient(circle at 50% 15%, rgba(59, 75, 116, 0.44), transparent 34%),
+        linear-gradient(145deg, #172038 0%, #1b2540 58%, #151d31 100%);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
     .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      min-height: 86px;
-      padding: 18px 0;
-    }
-
-    .brand {
+      grid-column: 1 / -1;
       display: grid;
-      gap: 3px;
+      grid-template-columns: 300px minmax(0, 1fr) 330px;
+      align-items: center;
+      gap: 28px;
+      min-height: 54px;
     }
 
-    .brand strong {
-      font-size: clamp(24px, 3vw, 38px);
+    .brand-dot {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #f5f7ff, #c8d1e5);
+      color: #172038;
+      font-size: 24px;
       font-weight: 950;
-      letter-spacing: 0;
-      line-height: 0.95;
-      text-transform: uppercase;
+      box-shadow: 0 14px 26px rgba(0, 0, 0, 0.28);
     }
 
-    .brand span {
-      color: var(--gold);
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      line-height: 1;
-      text-transform: uppercase;
-    }
-
-    .nav-actions,
-    .hero-actions,
-    .dock-actions {
+    .nav {
       display: flex;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(18px, 3vw, 44px);
+      color: rgba(255, 255, 255, 0.38);
+      font-size: 14px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
     }
 
-    .session-status {
+    .nav span {
       display: inline-flex;
       align-items: center;
-      min-height: 42px;
-      padding: 11px 13px 10px;
-      border-radius: 6px;
-      background: rgba(71, 226, 143, 0.1);
-      color: var(--green);
-      font-size: 13px;
-      font-weight: 900;
+      gap: 9px;
+      white-space: nowrap;
+    }
+
+    .nav span:first-child {
+      color: var(--ink);
+    }
+
+    .nav-icon {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      font-size: 11px;
       line-height: 1;
-      text-transform: uppercase;
-      box-shadow: inset 0 0 0 1px rgba(71, 226, 143, 0.22);
+    }
+
+    .auth-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 44px;
-      min-width: 132px;
+      min-height: 46px;
+      min-width: 116px;
       padding: 12px 18px 11px;
-      border: 0;
-      border-radius: 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--ink);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 950;
       line-height: 1;
-      text-align: center;
       text-transform: uppercase;
       transition: transform 140ms ease, filter 140ms ease;
       white-space: nowrap;
@@ -176,226 +178,489 @@
     }
 
     .button--primary {
+      border: 0;
       background: linear-gradient(180deg, var(--orange), var(--orange-2));
-      color: #150702;
+      color: #160701;
       box-shadow: 0 16px 32px rgba(255, 61, 0, 0.26);
     }
 
-    .button--secondary {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--ink);
-      box-shadow: inset 0 0 0 1px var(--line);
+    .session-status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: rgba(70, 223, 160, 0.1);
+      color: var(--green);
+      font-size: 12px;
+      font-weight: 950;
+      line-height: 1;
+      text-transform: uppercase;
     }
 
     [hidden] {
       display: none !important;
     }
 
-    .hero {
+    .sidebar-left,
+    .sidebar-right,
+    .main {
+      min-width: 0;
+    }
+
+    .sidebar-left,
+    .sidebar-right {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(330px, 0.68fr);
+      align-content: start;
+      gap: 24px;
+    }
+
+    .search {
+      display: flex;
       align-items: center;
-      gap: clamp(28px, 6vw, 86px);
-      min-height: 0;
-      padding: clamp(18px, 4vh, 54px) 0 clamp(18px, 4vh, 46px);
+      gap: 12px;
+      height: 58px;
+      padding: 0 18px;
+      border-radius: 28px;
+      background: rgba(14, 22, 40, 0.52);
+      color: var(--muted);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    }
+
+    .search-icon {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--muted);
+      border-radius: 50%;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .search-icon::after {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 2px;
+      right: -6px;
+      bottom: -3px;
+      background: var(--muted);
+      transform: rotate(45deg);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 950;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .providers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .provider {
+      min-height: 76px;
+      display: grid;
+      place-items: center;
+      padding: 12px;
+      border-radius: 18px;
+      background: var(--panel);
+      color: var(--soft);
+      font-size: 15px;
+      font-weight: 950;
+      line-height: 1;
+      text-align: center;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.025);
+    }
+
+    .provider strong {
+      color: var(--gold);
+      font-size: 21px;
+      font-style: italic;
+    }
+
+    .stats {
+      min-height: 270px;
+      display: grid;
+      align-content: center;
+      gap: 18px;
+      padding: 28px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at 65% 62%, rgba(255, 106, 0, 0.2), transparent 34%),
+        linear-gradient(145deg, #2a3657, #202a47);
+    }
+
+    .stats-number {
+      font-size: clamp(42px, 5vw, 62px);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+    }
+
+    .stats-label {
+      font-size: 15px;
+      font-weight: 950;
+      color: var(--ink);
+    }
+
+    .sparkline {
+      width: 100%;
+      height: 96px;
+    }
+
+    .main {
+      display: grid;
+      align-content: start;
+      gap: 28px;
+    }
+
+    .hero-card {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(280px, 0.85fr);
+      min-height: 380px;
+      border-radius: 32px;
+      overflow: hidden;
+      background: linear-gradient(145deg, #2d385c, #243052);
     }
 
     .hero-copy {
       display: grid;
-      gap: 19px;
       align-content: center;
-      min-width: 0;
-    }
-
-    .eyebrow {
-      color: var(--gold);
-      font-size: 13px;
-      font-weight: 950;
-      letter-spacing: 0.18em;
-      line-height: 1;
-      text-transform: uppercase;
+      gap: 18px;
+      padding: clamp(30px, 5vw, 54px);
     }
 
     h1 {
-      max-width: 820px;
       margin: 0;
-      font-size: clamp(56px, 8vw, 118px);
+      font-size: clamp(50px, 7vw, 78px);
       font-weight: 950;
       letter-spacing: 0;
-      line-height: 0.86;
-      text-transform: uppercase;
-      text-shadow: 0 18px 46px rgba(0, 0, 0, 0.42);
+      line-height: 0.88;
     }
 
-    .lead {
-      max-width: 680px;
+    .hero-copy p {
       margin: 0;
-      color: rgba(247, 244, 236, 0.76);
-      font-size: clamp(18px, 2vw, 24px);
-      font-weight: 700;
-      line-height: 1.34;
-    }
-
-    .auth-note {
-      max-width: 650px;
-      margin: 0;
-      color: rgba(247, 244, 236, 0.52);
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 1.35;
-    }
-
-    .showcase {
-      display: grid;
-      justify-items: start;
-      align-content: center;
-      gap: 18px;
-      min-width: 0;
-    }
-
-    .showcase img {
-      display: block;
-      width: min(100%, 560px);
-      height: auto;
-      filter:
-        drop-shadow(0 26px 42px rgba(0, 0, 0, 0.56))
-        drop-shadow(0 0 26px rgba(255, 106, 0, 0.2));
-    }
-
-    .showcase-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 900;
-      line-height: 1;
-      text-transform: uppercase;
-    }
-
-    .status {
-      color: var(--green);
-    }
-
-    .showcase p {
-      max-width: 480px;
-      margin: 0;
-      color: rgba(247, 244, 236, 0.66);
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.35;
-    }
-
-    .dock {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 16px;
-      min-height: 82px;
-      padding: 14px 0 max(16px, env(safe-area-inset-bottom));
-      background:
-        linear-gradient(90deg, rgba(255, 106, 0, 0.11), transparent 30%, transparent 70%, rgba(255, 194, 74, 0.1)),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(0, 0, 0, 0));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    }
-
-    .dock-title {
-      display: grid;
-      gap: 4px;
-      min-width: 0;
-    }
-
-    .dock-title strong {
-      font-size: 16px;
+      color: #ffe3c0;
+      font-size: clamp(25px, 3vw, 36px);
       font-weight: 950;
       line-height: 1;
-      text-transform: uppercase;
     }
 
-    .dock-title span {
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .hero-logo-wrap {
+      display: grid;
+      place-items: center;
+      min-height: 100%;
+      padding: 26px;
+      background:
+        radial-gradient(circle at 38% 34%, rgba(255, 194, 74, 0.24), transparent 38%),
+        linear-gradient(145deg, rgba(255, 106, 0, 0.14), rgba(7, 13, 24, 0.24));
+    }
+
+    .hero-logo-wrap img {
+      display: block;
+      width: min(100%, 520px);
+      height: auto;
+      filter:
+        drop-shadow(0 24px 36px rgba(0, 0, 0, 0.44))
+        drop-shadow(0 0 20px rgba(255, 106, 0, 0.18));
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 18px;
+      overflow: hidden;
+    }
+
+    .game-tile {
+      display: grid;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .thumb {
+      aspect-ratio: 1 / 0.86;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 72% 30%, rgba(255, 194, 74, 0.62), transparent 24%),
+        radial-gradient(circle at 34% 62%, rgba(140, 109, 255, 0.55), transparent 32%),
+        linear-gradient(145deg, #26395d, #111a2e);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+    }
+
+    .game-tile:nth-child(2) .thumb {
+      background:
+        radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.88), transparent 20%),
+        radial-gradient(circle at 68% 66%, rgba(255, 106, 0, 0.52), transparent 32%),
+        linear-gradient(145deg, #314462, #171f34);
+    }
+
+    .game-tile:nth-child(3) .thumb {
+      background:
+        radial-gradient(circle at 76% 36%, rgba(255, 106, 0, 0.62), transparent 24%),
+        radial-gradient(circle at 28% 65%, rgba(70, 223, 160, 0.52), transparent 30%),
+        linear-gradient(145deg, #33405f, #19233c);
+    }
+
+    .game-tile:nth-child(4) .thumb {
+      background:
+        radial-gradient(circle at 45% 45%, rgba(255, 194, 74, 0.72), transparent 22%),
+        radial-gradient(circle at 80% 74%, rgba(255, 61, 0, 0.5), transparent 30%),
+        linear-gradient(145deg, #2b385b, #131d32);
+    }
+
+    .game-tile strong {
+      font-size: 22px;
+      font-weight: 950;
+      line-height: 0.98;
+    }
+
+    .sidebar-right {
+      padding-top: 90px;
+    }
+
+    .mini-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(78px, 1fr));
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .mini-art {
+      aspect-ratio: 1;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 42% 34%, rgba(255, 255, 255, 0.78), transparent 22%),
+        radial-gradient(circle at 66% 68%, rgba(255, 106, 0, 0.5), transparent 30%),
+        linear-gradient(145deg, #344460, #182137);
+    }
+
+    .quick-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .quick-item {
+      display: grid;
+      grid-template-columns: 70px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 15px;
+      min-height: 104px;
+      padding: 16px;
+      border-radius: 24px;
+      background: var(--panel);
+    }
+
+    .quick-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.82), transparent 24%),
+        linear-gradient(145deg, #344662, #131c31);
+    }
+
+    .quick-item strong {
+      font-size: 24px;
+      font-weight: 950;
+      line-height: 0.98;
+    }
+
+    .quick-arrow {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: #2f3b5f;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 950;
+    }
+
+    .rewards {
+      min-height: 170px;
+      display: grid;
+      align-content: center;
+      gap: 10px;
+      padding: 28px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 76% 24%, rgba(255, 194, 74, 0.34), transparent 28%),
+        linear-gradient(145deg, #7b5cff, #ff6a87);
+    }
+
+    .rewards strong {
+      font-size: 34px;
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    .rewards span {
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .bottom-table {
+      grid-column: 1 / -1;
+      display: grid;
+      gap: 14px;
+      min-height: 150px;
+      padding-top: 8px;
+    }
+
+    .bottom-table h2 {
+      margin: 0;
+      font-size: 30px;
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: minmax(160px, 1fr) minmax(140px, 1fr) minmax(110px, 0.7fr) minmax(110px, 0.7fr);
+      align-items: center;
+      gap: 16px;
+      min-height: 58px;
+      color: var(--soft);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .table-row--head {
+      min-height: 28px;
       color: var(--muted);
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.25;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
     }
 
-    @media (max-width: 900px) {
-      .page {
-        padding: 0 18px;
+    @media (max-width: 1180px) {
+      .app {
+        grid-template-columns: 250px minmax(0, 1fr);
       }
 
       .topbar {
-        align-items: flex-start;
-        flex-direction: column;
-        min-height: 0;
+        grid-template-columns: 250px minmax(0, 1fr);
       }
 
-      .nav-actions {
-        width: 100%;
-      }
-
-      .nav-actions .button,
-      .nav-actions .session-status {
-        flex: 1 1 0;
-      }
-
-      .hero {
-        grid-template-columns: minmax(0, 1fr);
-        align-content: start;
-        padding-top: 18px;
-        gap: 28px;
-      }
-
-      .showcase {
-        justify-items: center;
-      }
-
-      .showcase p,
-      .showcase-meta {
-        justify-content: center;
-        text-align: center;
-      }
-
-      .dock {
-        grid-template-columns: minmax(0, 1fr);
-      }
-
-      .dock-actions .button {
-        flex: 1 1 0;
+      .sidebar-right {
+        grid-column: 1 / -1;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 0.7fr);
+        padding-top: 0;
       }
     }
 
-    @media (max-width: 520px) {
-      .page {
-        padding: 0 14px;
+    @media (max-width: 900px) {
+      .app {
+        width: min(100% - 18px, 720px);
+        min-height: auto;
+        margin: 9px auto;
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto;
+        padding: 18px;
+        border-radius: 24px;
+        gap: 22px;
       }
 
-      .brand strong {
-        font-size: 24px;
+      .topbar {
+        grid-column: 1;
+        grid-template-columns: minmax(0, 1fr);
       }
 
-      .brand span {
-        font-size: 11px;
+      .brand-dot {
+        width: 42px;
+        height: 42px;
+      }
+
+      .nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .auth-actions {
+        justify-content: stretch;
+      }
+
+      .auth-actions .button,
+      .auth-actions .session-status {
+        flex: 1 1 0;
+      }
+
+      .sidebar-left,
+      .sidebar-right {
+        grid-column: 1;
+      }
+
+      .hero-card {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-logo-wrap {
+        min-height: 220px;
+      }
+
+      .game-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .sidebar-right {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .bottom-table {
+        grid-column: 1;
+        overflow-x: auto;
+      }
+
+      .table-row {
+        min-width: 620px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .app {
+        width: min(100% - 10px, 520px);
+        margin: 5px auto;
+        padding: 14px;
+        border-radius: 20px;
+      }
+
+      .providers,
+      .game-grid,
+      .mini-strip {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-copy {
+        padding: 26px 22px;
       }
 
       h1 {
-        font-size: clamp(38px, 13vw, 56px);
-        line-height: 0.9;
+        font-size: clamp(40px, 15vw, 58px);
       }
 
-      .lead {
-        font-size: 16px;
-      }
-
-      .auth-note,
-      .showcase p,
-      .dock-title span {
-        font-size: 13px;
-      }
-
-      .showcase img {
-        width: min(100%, 360px);
+      .hero-copy p {
+        font-size: 23px;
       }
 
       .button,
@@ -404,68 +669,146 @@
         min-width: 0;
       }
 
-      .hero-actions .button,
-      .dock-actions .button,
-      .nav-actions .button {
+      .hero-actions {
         width: 100%;
       }
 
-      .dock {
-        min-height: 0;
-        padding-top: 12px;
+      .quick-item {
+        grid-template-columns: 58px minmax(0, 1fr) auto;
+      }
+
+      .quick-icon {
+        width: 58px;
+        height: 58px;
+      }
+
+      .quick-item strong {
+        font-size: 20px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="page">
+  <div class="app">
     <header class="topbar">
-      <a class="brand" href="/" aria-label="Big Slick Games home">
-        <strong>Big Slick Games</strong>
-        <span>The home of 21 Hold'em</span>
-      </a>
-      <nav class="nav-actions" aria-label="Account actions">
-        <span id="sessionStatus" class="session-status signed-in" hidden>Signed in with 21 Hold'em</span>
-        <a id="loginTopLink" class="button button--secondary signed-out" href="#">Sign in</a>
-        <a id="registerTopLink" class="button button--primary signed-out" href="#">Create account</a>
-        <a id="accountTopLink" class="button button--primary signed-in" href="#" hidden>Open 21 Hold'em</a>
+      <div class="brand-dot" aria-label="Big Slick Games">B</div>
+      <nav class="nav" aria-label="Big Slick Games sections">
+        <span><i class="nav-icon">◆</i> Casino</span>
+        <span><i class="nav-icon">21</i></span>
+        <span><i class="nav-icon">$</i></span>
+        <span><i class="nav-icon">↻</i></span>
+        <span><i class="nav-icon">♠</i></span>
+        <span><i class="nav-icon">⚡</i></span>
+      </nav>
+      <nav class="auth-actions" aria-label="Account actions">
+        <span id="sessionStatus" class="session-status signed-in" hidden>Signed in</span>
+        <a id="loginTopLink" class="button signed-out" href="#">Login</a>
+        <a id="registerTopLink" class="button signed-out" href="#">Signup</a>
+        <a id="accountTopLink" class="button button--primary signed-in" href="#" hidden>Open game</a>
       </nav>
     </header>
 
-    <main class="hero" aria-label="Big Slick Games 21 Hold'em gateway">
-      <section class="hero-copy">
-        <span class="eyebrow">One login for Big Slick Games and 21 Hold'em</span>
-        <h1>Modern casino action starts here.</h1>
-        <p class="lead">Big Slick Games is the public gateway. Account access, bankroll, profile, registration, and verification all run through the 21 Hold'em login system.</p>
-        <div class="hero-actions">
-          <a id="playLink" class="button button--primary" href="#">Play 21 Hold'em</a>
-          <a id="loginHeroLink" class="button button--secondary signed-out" href="#">Sign in</a>
-          <a id="accountHeroLink" class="button button--secondary signed-in" href="#" hidden>Continue signed in</a>
+    <aside class="sidebar-left" aria-label="Casino controls">
+      <div class="search"><span class="search-icon"></span><span>Search ...</span></div>
+
+      <section>
+        <h2 class="section-title">Providers <span>‹ ›</span></h2>
+        <div class="providers">
+          <div class="provider"><strong>Big</strong><br>Slick</div>
+          <div class="provider">21<br>Hold'em</div>
+          <div class="provider">Live<br>Tables</div>
+          <div class="provider">Private<br>Rooms</div>
         </div>
-        <p class="auth-note">There is no separate Hub account. Sign in once with 21 Hold'em and the Hub follows that same session on this host.</p>
       </section>
 
-      <aside class="showcase" aria-label="Featured game">
-        <img src="./assets/21-holdem-banner.png" alt="21 Hold'em">
-        <div class="showcase-meta">
-          <span>Featured table game</span>
-          <span class="status">Online</span>
+      <section>
+        <h2 class="section-title">Stats <span>‹ ›</span></h2>
+        <div class="stats">
+          <div>
+            <div class="stats-number">568.5b</div>
+            <div class="stats-label">- Total Chips</div>
+          </div>
+          <svg class="sparkline" viewBox="0 0 260 100" role="img" aria-label="Activity chart">
+            <path d="M4 80 C34 22, 56 20, 80 72 S122 88, 148 43 S190 25, 214 42 S240 50, 256 30" fill="none" stroke="#ff8a6a" stroke-width="12" stroke-linecap="round"/>
+            <path d="M4 80 C34 22, 56 20, 80 72 S122 88, 148 43 S190 25, 214 42 S240 50, 256 30" fill="none" stroke="#e8f7ff" stroke-width="6" stroke-linecap="round"/>
+          </svg>
         </div>
-        <p>Poker table pressure, blackjack totals, shared community cards, and fast account access through the existing 21 Hold'em auth system.</p>
-      </aside>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section class="hero-card" aria-label="21 Hold'em feature">
+        <div class="hero-copy">
+          <h1>Welcome Bonus!</h1>
+          <p>200+ free chips</p>
+          <div class="hero-actions">
+            <a id="registerHeroLink" class="button button--primary signed-out" href="#">Register</a>
+            <a id="loginHeroLink" class="button signed-out" href="#">Login</a>
+            <a id="playLink" class="button button--primary signed-in" href="#" hidden>Play now</a>
+          </div>
+        </div>
+        <div class="hero-logo-wrap">
+          <img src="./assets/21-holdem-banner.png" alt="21 Hold'em">
+        </div>
+      </section>
+
+      <section class="game-grid" aria-label="Featured games">
+        <article class="game-tile"><div class="thumb"></div><strong>21<br>Hold'em</strong></article>
+        <article class="game-tile"><div class="thumb"></div><strong>Live<br>Tables</strong></article>
+        <article class="game-tile"><div class="thumb"></div><strong>Private<br>Rooms</strong></article>
+        <article class="game-tile"><div class="thumb"></div><strong>Daily<br>Rewards</strong></article>
+      </section>
     </main>
 
-    <footer class="dock" aria-label="Big Slick Games site controls">
-      <div class="dock-title">
-        <strong>Big Slick Games Hub</strong>
-        <span>Public gateway, one 21 Hold'em login, no separate website auth.</span>
+    <aside class="sidebar-right" aria-label="Sidebar">
+      <section>
+        <h2 class="section-title">Sidebar <span>‹ ›</span></h2>
+        <div class="mini-strip">
+          <div class="mini-art"></div>
+          <div class="mini-art"></div>
+          <div class="mini-art"></div>
+        </div>
+      </section>
+
+      <section class="quick-list">
+        <a id="quickPlayLink" class="quick-item" href="#">
+          <span class="quick-icon"></span>
+          <strong>21<br>Hold'em</strong>
+          <span class="quick-arrow">→</span>
+        </a>
+        <a id="quickLoginLink" class="quick-item signed-out" href="#">
+          <span class="quick-icon"></span>
+          <strong>Account<br>Login</strong>
+          <span class="quick-arrow">→</span>
+        </a>
+        <a id="quickRegisterLink" class="quick-item signed-out" href="#">
+          <span class="quick-icon"></span>
+          <strong>Create<br>Account</strong>
+          <span class="quick-arrow">→</span>
+        </a>
+      </section>
+
+      <section class="rewards">
+        <strong>Rewards!</strong>
+        <span>Daily bonuses, table rewards, and more.</span>
+      </section>
+    </aside>
+
+    <section class="bottom-table" aria-label="Last games">
+      <h2>Last Games</h2>
+      <div class="table-row table-row--head">
+        <span>Game</span>
+        <span>User</span>
+        <span>Bet Amount</span>
+        <span>Payout</span>
       </div>
-      <nav class="dock-actions" aria-label="Quick actions">
-        <a id="registerDockLink" class="button button--primary signed-out" href="#">Create account</a>
-        <a id="loginDockLink" class="button button--secondary signed-out" href="#">Sign in</a>
-        <a id="accountDockLink" class="button button--primary signed-in" href="#" hidden>Enter game</a>
-      </nav>
-    </footer>
+      <div class="table-row">
+        <span>21 Hold'em</span>
+        <span>bigslick_player</span>
+        <span>5.6050800</span>
+        <span>6.72005</span>
+      </div>
+    </section>
   </div>
 
   <script id="fallbackProjects" type="application/json">
@@ -528,13 +871,13 @@
     const links = {
       loginTopLink: '/login',
       loginHeroLink: '/login',
-      loginDockLink: '/login',
+      quickLoginLink: '/login',
       registerTopLink: '/register',
-      registerDockLink: '/register',
+      registerHeroLink: '/register',
+      quickRegisterLink: '/register',
       accountTopLink: '/',
-      accountHeroLink: '/',
-      accountDockLink: '/',
       playLink: '/',
+      quickPlayLink: '/',
     };
 
     Object.entries(links).forEach(([id, path]) => {
