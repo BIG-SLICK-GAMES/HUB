@@ -734,6 +734,19 @@
       transition: transform 160ms ease, filter 160ms ease;
     }
 
+    .hero-card--floating {
+      min-height: 410px;
+      overflow: visible;
+      background: transparent;
+      backdrop-filter: none;
+      box-shadow: none;
+    }
+
+    .hero-card--floating::before,
+    .hero-card--floating::after {
+      content: none;
+    }
+
     .hero-card:hover,
     .game-tile:hover,
     .quick-item:hover {
@@ -755,9 +768,54 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       opacity: 1;
       transform: none;
+    }
+
+    .selector-rotator {
+      position: absolute;
+      inset: -8% -4%;
+      overflow: visible;
+    }
+
+    .selector-rotator .selector-banner {
+      opacity: 0;
+      filter:
+        drop-shadow(calc(var(--shadow-x) * 0.46) calc(var(--shadow-y) * 0.46) 30px var(--control-shadow))
+        drop-shadow(0 0 22px rgba(255, 106, 0, 0.16));
+      animation: selectorBannerCycle 25s ease-in-out infinite;
+    }
+
+    .selector-rotator .selector-banner:nth-child(2) {
+      animation-delay: 5s;
+    }
+
+    .selector-rotator .selector-banner:nth-child(3) {
+      animation-delay: 10s;
+    }
+
+    .selector-rotator .selector-banner:nth-child(4) {
+      animation-delay: 15s;
+    }
+
+    .selector-rotator .selector-banner:nth-child(5) {
+      animation-delay: 20s;
+    }
+
+    @keyframes selectorBannerCycle {
+      0%, 13% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+      }
+      18%, 32% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      37%, 100% {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.98);
+      }
     }
 
     .hero-card::after,
@@ -1485,12 +1543,13 @@
     </aside>
 
     <main class="main">
-      <a id="gameSelectorMain" class="hero-card" href="#" aria-label="Open 21 Hold'em">
-        <img class="selector-banner" src="./assets/selector-stackem.png" alt="">
-        <div class="hero-copy">
-          <span class="selector-meta">Game Selector</span>
-          <h1>21 Stack'em</h1>
-          <p>Classic & Quake</p>
+      <a id="gameSelectorMain" class="hero-card hero-card--floating" href="#" aria-label="Open game selector">
+        <div class="selector-rotator" aria-hidden="true">
+          <img class="selector-banner" src="./assets/generated-stackem.png" alt="">
+          <img class="selector-banner" src="./assets/generated-holdem.png" alt="">
+          <img class="selector-banner" src="./assets/generated-racing-suits.png" alt="">
+          <img class="selector-banner" src="./assets/generated-mini-games-hub.png" alt="">
+          <img class="selector-banner" src="./assets/generated-daily-rewards.png" alt="">
         </div>
       </a>
 
