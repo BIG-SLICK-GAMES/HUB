@@ -282,6 +282,235 @@
       gap: 24px;
     }
 
+    .profile-panel {
+      display: grid;
+      gap: 18px;
+    }
+
+    .profile-panel__top {
+      display: grid;
+      grid-template-columns: 116px minmax(0, 1fr);
+      align-items: center;
+      gap: 14px;
+    }
+
+    .profile-logo {
+      width: 100%;
+      max-height: 68px;
+      object-fit: contain;
+      filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.35));
+    }
+
+    .profile-chip {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      min-height: 66px;
+      padding: 8px 13px 8px 8px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 255, 255, 0.17), transparent 36%),
+        linear-gradient(145deg, rgba(33, 52, 79, 0.98), rgba(14, 25, 40, 0.98));
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+        inset 0 -10px 20px rgba(0, 0, 0, 0.2),
+        calc(var(--shadow-x) * 0.4) calc(var(--shadow-y) * 0.4) 28px rgba(0, 0, 0, 0.32);
+    }
+
+    .profile-chip img,
+    .profile-card__avatar {
+      display: block;
+      border-radius: 24px;
+      object-fit: cover;
+      background: #14243a;
+    }
+
+    .profile-chip img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px rgba(255, 106, 0, 0.55);
+    }
+
+    .profile-chip span,
+    .profile-card__details span,
+    .profile-stat span {
+      display: block;
+      color: var(--soft);
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 0.14em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .profile-chip strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--gold);
+      font-size: 24px;
+      font-weight: 950;
+      line-height: 0.95;
+      text-shadow: 0 0 16px rgba(255, 177, 59, 0.24);
+    }
+
+    .profile-title {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 12px;
+      color: var(--ink);
+      font-size: 34px;
+      font-weight: 950;
+      line-height: 1;
+      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.48);
+    }
+
+    .profile-title span {
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, transparent, rgba(255, 177, 59, 0.78), transparent);
+    }
+
+    .profile-card {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      gap: 16px;
+      padding: 18px;
+      border-radius: 26px;
+      background:
+        radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 255, 255, 0.13), transparent 30%),
+        radial-gradient(circle at 50% 8%, rgba(255, 106, 0, 0.24), transparent 34%),
+        linear-gradient(180deg, rgba(20, 34, 55, 0.98), rgba(5, 13, 24, 0.98));
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 177, 59, 0.33),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.04),
+        calc(var(--shadow-x) * 0.58) calc(var(--shadow-y) * 0.58) 44px rgba(0, 0, 0, 0.42);
+    }
+
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 24px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.1), transparent 34%),
+        linear-gradient(180deg, rgba(21, 37, 58, 0.86), rgba(4, 12, 22, 0.72));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+      pointer-events: none;
+    }
+
+    .profile-card__hero,
+    .profile-stat-grid,
+    .profile-action {
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-card__hero {
+      min-height: 184px;
+      display: grid;
+      grid-template-columns: 104px minmax(0, 1fr);
+      align-items: center;
+      gap: 18px;
+      padding: 22px 18px;
+      border-radius: 24px;
+      background:
+        linear-gradient(90deg, rgba(4, 12, 22, 0.38), rgba(15, 30, 48, 0.84)),
+        url("./assets/profile-avatar.png") center / cover no-repeat;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.09);
+    }
+
+    .profile-card__hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, rgba(5, 13, 24, 0.18), rgba(5, 13, 24, 0.84));
+      backdrop-filter: blur(1px);
+      pointer-events: none;
+    }
+
+    .profile-card__avatar,
+    .profile-card__details {
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-card__avatar {
+      width: 104px;
+      height: 104px;
+      border-radius: 24px;
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.16),
+        0 0 0 7px rgba(10, 25, 42, 0.72),
+        0 16px 34px rgba(0, 0, 0, 0.34);
+    }
+
+    .profile-card__details strong {
+      display: block;
+      margin-top: 10px;
+      color: var(--ink);
+      font-size: 34px;
+      font-weight: 950;
+      letter-spacing: 0.02em;
+      line-height: 0.95;
+    }
+
+    .profile-card__details em {
+      display: block;
+      margin-top: 14px;
+      color: var(--soft);
+      font-size: 15px;
+      font-style: normal;
+      font-weight: 950;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .profile-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .profile-stat {
+      min-height: 104px;
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 18px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at var(--light-x) var(--light-y), rgba(255, 255, 255, 0.1), transparent 35%),
+        linear-gradient(145deg, rgba(18, 34, 54, 0.98), rgba(6, 17, 30, 0.98));
+      box-shadow:
+        inset 0 0 0 1px rgba(106, 154, 196, 0.28),
+        calc(var(--shadow-x) * 0.28) calc(var(--shadow-y) * 0.28) 18px rgba(0, 0, 0, 0.22);
+    }
+
+    .profile-stat--wide {
+      grid-column: 1 / -1;
+    }
+
+    .profile-stat strong {
+      color: var(--ink);
+      font-size: 28px;
+      font-weight: 950;
+      line-height: 1;
+    }
+
+    .profile-action {
+      width: 100%;
+      justify-content: center;
+    }
+
     .search {
       display: flex;
       align-items: center;
@@ -830,6 +1059,84 @@
         gap: 8px;
       }
 
+      .profile-panel {
+        gap: 14px;
+      }
+
+      .profile-panel__top {
+        grid-template-columns: 92px minmax(0, 1fr);
+        gap: 10px;
+      }
+
+      .profile-chip {
+        min-height: 56px;
+        grid-template-columns: 40px minmax(0, 1fr);
+        padding: 8px 10px 8px 8px;
+      }
+
+      .profile-chip img {
+        width: 40px;
+        height: 40px;
+      }
+
+      .profile-chip strong {
+        font-size: 18px;
+      }
+
+      .profile-title {
+        font-size: 28px;
+      }
+
+      .profile-card {
+        padding: 14px;
+        border-radius: 22px;
+      }
+
+      .profile-card::before {
+        inset: 12px;
+        border-radius: 20px;
+      }
+
+      .profile-card__hero {
+        min-height: 150px;
+        grid-template-columns: 84px minmax(0, 1fr);
+        gap: 14px;
+        padding: 18px 14px;
+        border-radius: 20px;
+      }
+
+      .profile-card__avatar {
+        width: 84px;
+        height: 84px;
+        border-radius: 20px;
+      }
+
+      .profile-card__details strong {
+        font-size: 28px;
+      }
+
+      .profile-card__details em {
+        font-size: 12px;
+      }
+
+      .profile-stat-grid {
+        gap: 10px;
+      }
+
+      .profile-stat {
+        min-height: 88px;
+        padding: 14px;
+        border-radius: 18px;
+      }
+
+      .profile-stat span {
+        font-size: 10px;
+      }
+
+      .profile-stat strong {
+        font-size: 23px;
+      }
+
       .providers,
       .game-grid,
       .mini-strip {
@@ -1035,42 +1342,59 @@
       </nav>
     </header>
 
-    <aside class="sidebar-left" aria-label="Casino controls">
-      <div class="search"><span class="search-icon"></span><span>Search ...</span></div>
-
-      <section class="time-control" aria-label="Lighting preview">
-        <div class="time-control__top">
-          <span>Lighting</span>
-          <span id="timeControlValue" class="time-control__value">Auto</span>
-        </div>
-        <input id="timeControlSlider" type="range" min="0" max="24" step="0.25" aria-label="Preview site lighting time">
-        <div class="time-control__actions">
-          <button id="timeAutoButton" class="time-control__button" type="button">Use AEST Auto</button>
-        </div>
-      </section>
-
-      <section>
-        <h2 class="section-title">Providers <span>‹ ›</span></h2>
-        <div class="providers">
-          <div class="provider"><strong>Big</strong><br>Slick</div>
-          <div class="provider">21<br>Hold'em</div>
-          <div class="provider">Live<br>Tables</div>
-          <div class="provider">Private<br>Rooms</div>
-        </div>
-      </section>
-
-      <section>
-        <h2 class="section-title">Stats <span>‹ ›</span></h2>
-        <div class="stats">
-          <div>
-            <div class="stats-number">568.5b</div>
-            <div class="stats-label">- Total Chips</div>
+    <aside class="sidebar-left" aria-label="Player profile">
+      <section class="profile-panel">
+        <div class="profile-panel__top">
+          <img class="profile-logo" src="./assets/21-holdem-banner.png" alt="21 Hold'em">
+          <div class="profile-chip">
+            <img src="./assets/profile-avatar.png" alt="Player profile">
+            <div>
+              <span>BR3NT</span>
+              <strong>67,075.75</strong>
+            </div>
           </div>
-          <svg class="sparkline" viewBox="0 0 260 100" role="img" aria-label="Activity chart">
-            <path d="M4 80 C34 22, 56 20, 80 72 S122 88, 148 43 S190 25, 214 42 S240 50, 256 30" fill="none" stroke="#ff8a6a" stroke-width="12" stroke-linecap="round"/>
-            <path d="M4 80 C34 22, 56 20, 80 72 S122 88, 148 43 S190 25, 214 42 S240 50, 256 30" fill="none" stroke="#e8f7ff" stroke-width="6" stroke-linecap="round"/>
-          </svg>
         </div>
+
+        <div class="profile-title" aria-label="Stats"><span></span><strong>Stats</strong><span></span></div>
+
+        <div class="profile-card">
+          <div class="profile-card__hero">
+            <img class="profile-card__avatar" src="./assets/profile-avatar.png" alt="BR3NT profile">
+            <div class="profile-card__details">
+              <span>Signed in as</span>
+              <strong>BR3NT</strong>
+              <em>Balance 67,075.75</em>
+            </div>
+          </div>
+
+          <div class="profile-stat-grid">
+            <div class="profile-stat">
+              <span>Hands Played</span>
+              <strong>15</strong>
+            </div>
+            <div class="profile-stat">
+              <span>Win %</span>
+              <strong>40%</strong>
+            </div>
+            <div class="profile-stat profile-stat--wide">
+              <span>Total Winnings</span>
+              <strong>10,131.75</strong>
+            </div>
+          </div>
+
+          <a id="profilePlayLink" class="button button--primary profile-action signed-in" href="#" hidden>Open game</a>
+        </div>
+
+        <section class="time-control" aria-label="Lighting preview">
+          <div class="time-control__top">
+            <span>Lighting</span>
+            <span id="timeControlValue" class="time-control__value">Auto</span>
+          </div>
+          <input id="timeControlSlider" type="range" min="0" max="24" step="0.25" aria-label="Preview site lighting time">
+          <div class="time-control__actions">
+            <button id="timeAutoButton" class="time-control__button" type="button">Use AEST Auto</button>
+          </div>
+        </section>
       </section>
     </aside>
 
@@ -1376,6 +1700,7 @@
       quickRegisterLink: '/register',
       accountTopLink: '/',
       playLink: '/',
+      profilePlayLink: '/',
       quickPlayLink: '/',
     };
 
