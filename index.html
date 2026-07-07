@@ -127,22 +127,12 @@
       padding: 28px;
       border-radius: 34px;
       background: transparent;
-      box-shadow:
-        var(--shadow-x) var(--shadow-y) 46px rgba(0, 0, 0, 0.18);
+      box-shadow: none;
       overflow: visible;
     }
 
     .app::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      border-radius: inherit;
-      background:
-        radial-gradient(circle at var(--light-x) var(--light-y), var(--surface-glint), transparent 30%),
-        linear-gradient(var(--shine-angle), transparent 0%, rgba(255, 255, 255, 0.05) 44%, rgba(255, 255, 255, 0.12) 50%, transparent 58%);
-      mix-blend-mode: screen;
-      opacity: 0.28;
+      content: none;
     }
 
     .topbar {
@@ -1117,6 +1107,13 @@
     }
 
     @media (max-width: 900px) {
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
       .app {
         width: min(100% - 18px, 720px);
         min-height: auto;
@@ -1126,6 +1123,7 @@
         padding: 18px;
         border-radius: 24px;
         gap: 22px;
+        overflow-x: clip;
       }
 
       .topbar {
@@ -1145,12 +1143,16 @@
       }
 
       .auth-actions {
-        justify-content: stretch;
+        justify-content: end;
       }
 
       .auth-actions .button,
       .auth-actions .session-status {
-        flex: 1 1 0;
+        flex: 0 1 auto;
+        min-width: 86px;
+        min-height: 36px;
+        padding: 9px 12px 8px;
+        font-size: 11px;
       }
 
       .sidebar-left,
@@ -1167,7 +1169,7 @@
       }
 
       .selector-rotator {
-        inset: -4% -6%;
+        inset: 0;
       }
 
       .hero-logo-wrap {
@@ -1184,11 +1186,12 @@
 
       .bottom-table {
         grid-column: 1;
-        overflow-x: auto;
+        overflow: visible;
       }
 
       .table-row {
-        min-width: 620px;
+        min-width: 0;
+        grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) auto auto;
       }
     }
 
@@ -1203,16 +1206,19 @@
 
       .app {
         width: 100%;
+        max-width: 100%;
         margin: 0;
-        padding: 14px;
+        padding: 12px;
         border-radius: 0;
         background: transparent;
         box-shadow: none;
-        gap: 16px;
+        gap: 12px;
+        overflow-x: clip;
       }
 
       .topbar {
-        gap: 12px;
+        gap: 8px;
+        justify-items: end;
       }
 
       .brand-dot {
@@ -1243,14 +1249,24 @@
       }
 
       .auth-actions {
-        width: 100%;
+        width: auto;
         display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
+        grid-template-columns: repeat(2, minmax(68px, 82px));
+        justify-content: end;
+        gap: 6px;
+      }
+
+      .auth-actions .button,
+      .auth-actions .session-status {
+        min-width: 0;
+        min-height: 32px;
+        padding: 7px 8px 6px;
+        border-radius: 999px;
+        font-size: 10px;
       }
 
       .profile-panel {
-        gap: 14px;
+        gap: 8px;
       }
 
       .profile-panel__top {
@@ -1258,18 +1274,26 @@
       }
 
       .profile-chip {
-        min-height: 56px;
-        grid-template-columns: 40px minmax(0, 1fr);
-        padding: 8px 10px 8px 8px;
+        width: fit-content;
+        max-width: 100%;
+        min-height: 42px;
+        grid-template-columns: 30px minmax(0, auto);
+        gap: 8px;
+        padding: 6px 10px 6px 6px;
       }
 
       .profile-chip img {
-        width: 40px;
-        height: 40px;
+        width: 30px;
+        height: 30px;
       }
 
       .profile-chip strong {
-        font-size: 18px;
+        margin-top: 3px;
+        font-size: 14px;
+      }
+
+      .profile-chip span {
+        font-size: 9px;
       }
 
       .profile-title {
@@ -1309,27 +1333,34 @@
       }
 
       .profile-stat-grid {
-        gap: 10px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
       }
 
       .profile-stat {
-        aspect-ratio: 1 / 0.86;
+        aspect-ratio: auto;
         min-height: 0;
-        padding: 14px;
-        border-radius: 18px;
+        padding: 10px 8px;
+        border-radius: 14px;
       }
 
       .profile-stat--wide {
+        grid-column: auto;
         aspect-ratio: auto;
-        min-height: 88px;
+        min-height: 0;
       }
 
       .profile-stat span {
-        font-size: 10px;
+        font-size: 8px;
+        letter-spacing: 0.08em;
       }
 
       .profile-stat strong {
-        font-size: 23px;
+        font-size: 15px;
+      }
+
+      .time-control {
+        display: none;
       }
 
       .providers,
@@ -1387,11 +1418,12 @@
       }
 
       .hero-card--floating {
-        min-height: clamp(190px, 62vw, 290px);
+        min-height: clamp(172px, 54vw, 240px);
+        overflow: hidden;
       }
 
       .selector-rotator {
-        inset: -2% -10%;
+        inset: 0;
       }
 
       .hero-copy {
@@ -1429,7 +1461,7 @@
       }
 
       .game-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 1fr);
         gap: 12px;
       }
 
