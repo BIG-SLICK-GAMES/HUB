@@ -717,7 +717,7 @@
     .main {
       display: grid;
       align-content: start;
-      gap: 14px;
+      gap: 6px;
     }
 
     .hero-card {
@@ -889,7 +889,7 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 12px;
-      margin-top: -8px;
+      margin-top: -34px;
       overflow: visible;
     }
 
@@ -919,12 +919,31 @@
         calc(var(--shadow-x) * 0.24) calc(var(--shadow-y) * 0.24) 16px var(--control-shadow);
     }
 
+    .tile-icon {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      font-size: clamp(34px, 5vw, 58px);
+      font-weight: 950;
+      line-height: 1;
+      text-shadow:
+        0 0 10px rgba(255, 106, 0, 0.58),
+        0 8px 22px rgba(0, 0, 0, 0.42);
+    }
+
+    .tile-icon--stack {
+      font-size: clamp(28px, 4.5vw, 48px);
+      color: var(--gold);
+    }
+
     .thumb img {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
       opacity: 1;
       transform: none;
     }
@@ -974,6 +993,7 @@
         inset 0 0 0 1px rgba(255, 177, 59, 0.28),
         0 8px 18px rgba(0, 0, 0, 0.32);
       backdrop-filter: blur(10px);
+      pointer-events: auto;
     }
 
     .tile-action--play {
@@ -1224,7 +1244,7 @@
 
       .game-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        margin-top: -12px;
+        margin-top: -26px;
       }
 
       .sidebar-right {
@@ -1510,7 +1530,7 @@
       .game-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
-        margin-top: -8px;
+        margin-top: -18px;
       }
 
       .thumb {
@@ -1685,31 +1705,31 @@
       </a>
 
       <section class="game-grid" aria-label="Featured games">
-        <a id="gameSelectorStackem" class="game-tile" href="#" aria-label="Play 21 Stack'em">
-          <div class="thumb"><img src="./assets/redesign-stackem.png?v=20260707c" alt=""></div>
+        <article class="game-tile" aria-label="21 Stack'em">
+          <div class="thumb"><span class="tile-icon tile-icon--stack">21</span></div>
           <strong>21<br>Stack'em</strong>
-          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
-        </a>
-        <a id="gameSelectorHoldem" class="game-tile" href="#" aria-label="Play 21 Hold'em">
-          <div class="thumb"><img src="./assets/icon-21-holdem.png?v=20260707d" alt=""></div>
+          <span class="game-tile__actions"><a id="gameStackemPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameStackemInfo" class="tile-action" href="#">Info</a></span>
+        </article>
+        <article class="game-tile" aria-label="21 Hold'em">
+          <div class="thumb"><span class="tile-icon">♠</span></div>
           <strong>21<br>Hold'em</strong>
-          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
-        </a>
-        <a id="gameSelectorRacing" class="game-tile" href="#" aria-label="Play Racing Suits">
-          <div class="thumb"><img src="./assets/icon-racing-suits.png?v=20260707d" alt=""></div>
+          <span class="game-tile__actions"><a id="gameHoldemPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameHoldemInfo" class="tile-action" href="#">Info</a></span>
+        </article>
+        <article class="game-tile" aria-label="Racing Suits">
+          <div class="thumb"><span class="tile-icon">⚑</span></div>
           <strong>Racing<br>Suits</strong>
-          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
-        </a>
-        <a id="gameSelectorMiniGames" class="game-tile" href="#" aria-label="Open Mini Games Hub">
-          <div class="thumb"><img src="./assets/generated-mini-games-hub.png?v=20260707b" alt=""></div>
+          <span class="game-tile__actions"><a id="gameRacingPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameRacingInfo" class="tile-action" href="#">Info</a></span>
+        </article>
+        <article class="game-tile" aria-label="Mini Games Hub">
+          <div class="thumb"><span class="tile-icon">◆</span></div>
           <strong>Mini Games<br>Hub</strong>
-          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
-        </a>
-        <a id="gameSelectorRewards" class="game-tile" href="#" aria-label="Open Daily Rewards">
-          <div class="thumb"><img src="./assets/generated-daily-rewards.png?v=20260707b" alt=""></div>
+          <span class="game-tile__actions"><a id="gameMiniGamesPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameMiniGamesInfo" class="tile-action" href="#">Info</a></span>
+        </article>
+        <article class="game-tile" aria-label="Daily Rewards">
+          <div class="thumb"><span class="tile-icon">★</span></div>
           <strong>Daily<br>Rewards</strong>
-          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
-        </a>
+          <span class="game-tile__actions"><a id="gameRewardsPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameRewardsInfo" class="tile-action" href="#">Info</a></span>
+        </article>
       </section>
     </main>
 
@@ -1784,6 +1804,7 @@
     const fallbackData = JSON.parse(document.getElementById('fallbackProjects').textContent);
 
     function resolveGameUrl(path) {
+      if (path.startsWith('./') || path.startsWith('../') || path.startsWith('#')) return path;
       const project = fallbackData.projects.find((item) => item.id === '21holdem-game') || fallbackData.projects[0];
       const baseUrl = project?.url || '/';
 
@@ -1998,14 +2019,16 @@
       playLink: '/',
       quickPlayLink: '/',
       gameSelectorMain: '/',
-      gameSelectorLive: '/',
-      gameSelectorPrivate: '/',
-      gameSelectorPractice: '/',
-      gameSelectorStackem: '/',
-      gameSelectorHoldem: '/',
-      gameSelectorRacing: '/',
-      gameSelectorMiniGames: '/',
-      gameSelectorRewards: '/',
+      gameStackemPlay: '/',
+      gameHoldemPlay: '/',
+      gameRacingPlay: '/',
+      gameMiniGamesPlay: '/',
+      gameRewardsPlay: '/',
+      gameStackemInfo: './games/21-stackem.html',
+      gameHoldemInfo: './games/21-holdem.html',
+      gameRacingInfo: './games/racing-suits.html',
+      gameMiniGamesInfo: './games/mini-games.html',
+      gameRewardsInfo: './games/daily-rewards.html',
       quickShopLink: '/shop',
       quickBonusesLink: '/bonuses',
       quickSettingsLink: '/settings',
