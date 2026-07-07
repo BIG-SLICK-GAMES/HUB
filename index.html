@@ -883,15 +883,15 @@
 
     .game-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(150px, 1fr));
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .game-tile {
       position: relative;
       display: grid;
-      gap: 12px;
+      gap: 10px;
       min-width: 0;
       color: var(--ink);
       text-decoration: none;
@@ -937,6 +937,42 @@
       font-size: 22px;
       font-weight: 950;
       line-height: 0.98;
+    }
+
+    .game-tile__actions {
+      position: absolute;
+      z-index: 3;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      pointer-events: none;
+    }
+
+    .tile-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+      padding: 8px 12px 7px;
+      border-radius: 999px;
+      background: rgba(7, 13, 22, 0.76);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 950;
+      line-height: 1;
+      text-transform: uppercase;
+      box-shadow:
+        inset 0 0 0 1px rgba(255, 177, 59, 0.28),
+        0 8px 18px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(10px);
+    }
+
+    .tile-action--play {
+      background: linear-gradient(180deg, var(--orange), var(--orange-2));
+      color: #160701;
     }
 
     .sidebar-right {
@@ -1461,21 +1497,36 @@
       }
 
       .game-grid {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 12px;
-      }
-
-      .thumb {
-        border-radius: 16px;
-      }
-
-      .game-tile {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
       }
 
+      .thumb {
+        aspect-ratio: 1 / 0.78;
+        border-radius: 14px;
+      }
+
+      .game-tile {
+        gap: 6px;
+        min-width: 0;
+      }
+
       .game-tile strong {
-        font-size: 17px;
+        font-size: 14px;
         line-height: 1;
+      }
+
+      .game-tile__actions {
+        left: 7px;
+        right: 7px;
+        bottom: 7px;
+        gap: 5px;
+      }
+
+      .tile-action {
+        min-height: 24px;
+        padding: 6px 7px 5px;
+        font-size: 8px;
       }
 
       .sidebar-right {
@@ -1595,8 +1646,6 @@
               <strong>10,131.75</strong>
             </div>
           </div>
-
-          <a id="profilePlayLink" class="button button--primary profile-action signed-in" href="#" hidden>Open game</a>
         </div>
 
         <section class="time-control" aria-label="Lighting preview">
@@ -1624,9 +1673,31 @@
       </a>
 
       <section class="game-grid" aria-label="Featured games">
-        <a id="gameSelectorLive" class="game-tile" href="#"><div class="thumb"><img src="./assets/selector-racing-suits.png" alt=""></div><strong>Racing<br>Suits</strong></a>
-        <a id="gameSelectorPrivate" class="game-tile" href="#"><div class="thumb"><img src="./assets/selector-live-tables.png" alt=""></div><strong>Live<br>Tables</strong></a>
-        <a id="gameSelectorPractice" class="game-tile" href="#"><div class="thumb"><img src="./assets/selector-private-table.png" alt=""></div><strong>Private<br>Rooms</strong></a>
+        <a id="gameSelectorStackem" class="game-tile" href="#" aria-label="Play 21 Stack'em">
+          <div class="thumb"><img src="./assets/redesign-stackem.png?v=20260707c" alt=""></div>
+          <strong>21<br>Stack'em</strong>
+          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
+        </a>
+        <a id="gameSelectorHoldem" class="game-tile" href="#" aria-label="Play 21 Hold'em">
+          <div class="thumb"><img src="./assets/redesign-holdem.png?v=20260707c" alt=""></div>
+          <strong>21<br>Hold'em</strong>
+          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
+        </a>
+        <a id="gameSelectorRacing" class="game-tile" href="#" aria-label="Play Racing Suits">
+          <div class="thumb"><img src="./assets/redesign-racing-suits.png?v=20260707c" alt=""></div>
+          <strong>Racing<br>Suits</strong>
+          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
+        </a>
+        <a id="gameSelectorMiniGames" class="game-tile" href="#" aria-label="Open Mini Games Hub">
+          <div class="thumb"><img src="./assets/generated-mini-games-hub.png?v=20260707b" alt=""></div>
+          <strong>Mini Games<br>Hub</strong>
+          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
+        </a>
+        <a id="gameSelectorRewards" class="game-tile" href="#" aria-label="Open Daily Rewards">
+          <div class="thumb"><img src="./assets/generated-daily-rewards.png?v=20260707b" alt=""></div>
+          <strong>Daily<br>Rewards</strong>
+          <span class="game-tile__actions"><span class="tile-action tile-action--play">Play</span><span class="tile-action">Info</span></span>
+        </a>
       </section>
     </main>
 
@@ -1913,12 +1984,16 @@
       quickRegisterLink: '/register',
       accountTopLink: '/',
       playLink: '/',
-      profilePlayLink: '/',
       quickPlayLink: '/',
       gameSelectorMain: '/',
       gameSelectorLive: '/',
       gameSelectorPrivate: '/',
       gameSelectorPractice: '/',
+      gameSelectorStackem: '/',
+      gameSelectorHoldem: '/',
+      gameSelectorRacing: '/',
+      gameSelectorMiniGames: '/',
+      gameSelectorRewards: '/',
       quickShopLink: '/shop',
       quickBonusesLink: '/bonuses',
       quickSettingsLink: '/settings',
