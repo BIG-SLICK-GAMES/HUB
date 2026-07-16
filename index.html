@@ -386,6 +386,10 @@
       align-self: stretch;
     }
 
+    .mobile-account-strip {
+      display: none;
+    }
+
     .profile-panel {
       display: grid;
       gap: 18px;
@@ -1224,7 +1228,7 @@
         width: min(100% - 18px, 720px);
         min-height: auto;
         margin: 9px auto;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr);
         grid-template-rows: auto;
         padding: 18px;
         border-radius: 24px;
@@ -1298,6 +1302,7 @@
       }
 
       .topbar,
+      .mobile-account-strip,
       .main,
       .leaderboard,
       .time-control,
@@ -1309,15 +1314,34 @@
         order: 1;
       }
 
-      .auth-actions {
+      .mobile-account-strip {
         order: 2;
-        grid-column: 1;
-        justify-content: start;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        min-width: 0;
       }
 
-      .profile-panel__top {
+      .mobile-account-strip .auth-actions {
+        display: flex;
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .mobile-account-strip .profile-chip {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .sidebar-right > .auth-actions,
+      .profile-panel > .profile-panel__top {
+        display: none;
+      }
+
+      .auth-actions {
         order: 2;
-        grid-column: 2;
+        justify-content: start;
       }
 
       .main {
@@ -1368,6 +1392,22 @@
     <header class="topbar">
       <img class="brand-banner" src="./assets/bsg-brand-banner.png?v=20260707a" alt="Big Slick Games">
     </header>
+
+    <section class="mobile-account-strip" aria-label="Mobile account summary">
+      <nav class="auth-actions" aria-label="Mobile account actions">
+        <span id="mobileSessionStatus" class="session-status signed-in" hidden>Signed in</span>
+        <a id="mobileLoginTopLink" class="button signed-out" href="#">Login</a>
+        <a id="mobileRegisterTopLink" class="button signed-out" href="#">Signup</a>
+        <a id="mobileAccountTopLink" class="button button--primary signed-in" href="#" hidden>Open game</a>
+      </nav>
+      <div class="profile-chip">
+        <img src="./assets/profile-avatar.png" alt="Player profile">
+        <div>
+          <span>BR3NT</span>
+          <strong>67,075.75</strong>
+        </div>
+      </div>
+    </section>
 
     <aside class="sidebar-left" aria-label="Player profile">
       <section class="profile-panel">
@@ -1776,12 +1816,15 @@
 
     const links = {
       loginTopLink: '/login',
+      mobileLoginTopLink: '/login',
       loginHeroLink: '/login',
       quickLoginLink: '/login',
       registerTopLink: '/register',
+      mobileRegisterTopLink: '/register',
       registerHeroLink: '/register',
       quickRegisterLink: '/register',
       accountTopLink: '/',
+      mobileAccountTopLink: '/',
       playLink: '/',
       quickPlayLink: '/',
       gameSelectorMain: '/',
