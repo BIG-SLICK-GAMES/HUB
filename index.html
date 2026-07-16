@@ -1022,6 +1022,31 @@
       transform: none;
     }
 
+    .soon-ribbon {
+      position: absolute;
+      z-index: 4;
+      top: 14px;
+      right: -34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 142px;
+      min-height: 34px;
+      transform: rotate(36deg);
+      border: 1px solid rgba(var(--brand-amber-rgb), 0.72);
+      background:
+        linear-gradient(180deg, var(--brand-amber), var(--brand-orange));
+      color: #170700;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 0.12em;
+      line-height: 1;
+      text-transform: uppercase;
+      box-shadow:
+        0 0 18px rgba(var(--brand-orange-rgb), 0.44),
+        0 8px 18px rgba(0, 0, 0, 0.34);
+    }
+
     .game-tile:nth-child(2) .thumb {
       background: var(--info-square-bg);
     }
@@ -1169,7 +1194,8 @@
       box-shadow:
         0 0 0 1px rgba(var(--brand-amber-rgb), 0.58),
         0 8px 18px rgba(0, 0, 0, 0.34);
-    }`r`n`r`n
+    }
+
     @media (max-width: 1180px) {
       .app {
         grid-template-columns: 250px minmax(0, 1fr);
@@ -1198,7 +1224,7 @@
         width: min(100% - 18px, 720px);
         min-height: auto;
         margin: 9px auto;
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         grid-template-rows: auto;
         padding: 18px;
         border-radius: 24px;
@@ -1207,7 +1233,7 @@
       }
 
       .topbar {
-        grid-column: 1;
+        grid-column: 1 / -1;
         min-height: clamp(180px, 29vw, 240px);
       }
 
@@ -1234,15 +1260,80 @@
       .auth-actions .button,
       .auth-actions .session-status {
         flex: 0 1 auto;
-        min-width: 86px;
+        min-width: 76px;
         min-height: 36px;
         padding: 9px 12px 8px;
-        font-size: 12px;
+        font-size: 11px;
+      }
+
+      .profile-panel__top {
+        align-self: center;
+      }
+
+      .profile-chip {
+        justify-self: stretch;
+        grid-template-columns: 42px minmax(0, 1fr);
+        min-height: 56px;
+        padding: 7px 11px 7px 7px;
+      }
+
+      .profile-chip img {
+        width: 42px;
+        height: 42px;
+      }
+
+      .profile-chip strong {
+        font-size: 20px;
       }
 
       .sidebar-left,
       .sidebar-right {
+        grid-column: 1 / -1;
+      }
+
+      .sidebar-left,
+      .sidebar-right,
+      .profile-panel {
+        display: contents;
+      }
+
+      .topbar,
+      .main,
+      .leaderboard,
+      .time-control,
+      .quick-list {
+        grid-column: 1 / -1;
+      }
+
+      .topbar {
+        order: 1;
+      }
+
+      .auth-actions {
+        order: 2;
         grid-column: 1;
+        justify-content: start;
+      }
+
+      .profile-panel__top {
+        order: 2;
+        grid-column: 2;
+      }
+
+      .main {
+        order: 3;
+      }
+
+      .leaderboard {
+        order: 4;
+      }
+
+      .time-control {
+        order: 5;
+      }
+
+      .quick-list {
+        order: 6;
       }
 
       .hero-card {
@@ -1329,7 +1420,7 @@
 
       <section class="game-grid" aria-label="Featured games">
         <article class="game-tile" aria-label="21 Stack'em">
-          <div class="thumb"><img src="./assets/icon-21-stackem-simple.png?v=20260716a" alt=""><span class="tile-face"><strong>21<br>Stack'em</strong></span></div>
+          <div class="thumb"><img src="./assets/icon-21-stackem-simple.png?v=20260716a" alt=""><span class="soon-ribbon">Soon</span><span class="tile-face"><strong>21<br>Stack'em</strong></span></div>
           <span class="game-tile__actions"><a id="gameStackemPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameStackemInfo" class="tile-action" href="#">Info</a></span>
         </article>
         <article class="game-tile" aria-label="21 Hold'em">
@@ -1337,11 +1428,11 @@
           <span class="game-tile__actions"><a id="gameHoldemPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameHoldemInfo" class="tile-action" href="#">Info</a></span>
         </article>
         <article class="game-tile" aria-label="Quake">
-          <div class="thumb"><img src="./assets/icon-quake-simple.png?v=20260716a" alt=""><span class="tile-face"><strong>Quake</strong></span></div>
+          <div class="thumb"><img src="./assets/icon-quake-simple.png?v=20260716a" alt=""><span class="soon-ribbon">Soon</span><span class="tile-face"><strong>Quake</strong></span></div>
           <span class="game-tile__actions"><a id="gameQuakePlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameQuakeInfo" class="tile-action" href="#">Info</a></span>
         </article>
         <article class="game-tile" aria-label="Racing Suits">
-          <div class="thumb"><img src="./assets/icon-racing-suits-simple.png?v=20260716a" alt=""><span class="tile-face"><strong>Racing<br>Suits</strong></span></div>
+          <div class="thumb"><img src="./assets/icon-racing-suits-simple.png?v=20260716a" alt=""><span class="soon-ribbon">Soon</span><span class="tile-face"><strong>Racing<br>Suits</strong></span></div>
           <span class="game-tile__actions"><a id="gameRacingPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameRacingInfo" class="tile-action" href="#">Info</a></span>
         </article>
       </section>
@@ -1703,7 +1794,7 @@
       gameQuakeInfo: './games/mini-games.html',
       gameRacingInfo: './games/racing-suits.html',
       quickShopLink: './shop.html',
-      quickSocialsLink: 'https://www.facebook.com/profile.php?id=61576097674557',
+      quickSocialsLink: './socials.html',
       quickContactLink: './contact.html',
     };
 
