@@ -1395,10 +1395,9 @@
 
     <section class="mobile-account-strip" aria-label="Mobile account summary">
       <nav class="auth-actions" aria-label="Mobile account actions">
-        <span id="mobileSessionStatus" class="session-status signed-in" hidden>Signed in</span>
         <a id="mobileLoginTopLink" class="button signed-out" href="#">Login</a>
         <a id="mobileRegisterTopLink" class="button signed-out" href="#">Signup</a>
-        <a id="mobileAccountTopLink" class="button button--primary signed-in" href="#" hidden>Open game</a>
+        <button id="mobileSignOutTopButton" class="button button--primary signed-in" type="button" hidden>Sign out</button>
       </nav>
       <div class="profile-chip">
         <img src="./assets/profile-avatar.png" alt="Player profile">
@@ -1480,10 +1479,9 @@
 
     <aside class="sidebar-right" aria-label="Site menu">
       <nav class="auth-actions" aria-label="Account actions">
-        <span id="sessionStatus" class="session-status signed-in" hidden>Signed in</span>
         <a id="loginTopLink" class="button signed-out" href="#">Login</a>
         <a id="registerTopLink" class="button signed-out" href="#">Signup</a>
-        <a id="accountTopLink" class="button button--primary signed-in" href="#" hidden>Open game</a>
+        <button id="signOutTopButton" class="button button--primary signed-in" type="button" hidden>Sign out</button>
       </nav>
 
       <section class="quick-list">
@@ -1569,6 +1567,20 @@
 
       document.querySelectorAll('.signed-out').forEach((node) => {
         node.hidden = has21HoldemSession;
+      });
+    }
+
+    function clearCookie(name) {
+      document.cookie = `${name}=; Max-Age=0; path=/`;
+      document.cookie = `${name}=; Max-Age=0; path=/; SameSite=Lax`;
+    }
+
+    function setupSignOutButtons() {
+      document.querySelectorAll('#signOutTopButton, #mobileSignOutTopButton').forEach((button) => {
+        button.addEventListener('click', () => {
+          clearCookie('sAuthToken');
+          applySessionState();
+        });
       });
     }
 
@@ -1823,8 +1835,6 @@
       mobileRegisterTopLink: '/register',
       registerHeroLink: '/register',
       quickRegisterLink: '/register',
-      accountTopLink: '/',
-      mobileAccountTopLink: '/',
       playLink: '/',
       quickPlayLink: '/',
       gameSelectorMain: '/',
@@ -1856,6 +1866,7 @@
     setupTimeControl();
     setupLeaderboards();
     applySessionState();
+    setupSignOutButtons();
     setInterval(applyAestLightingTheme, 5 * 60 * 1000);
   </script>
 </body>
