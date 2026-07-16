@@ -1399,11 +1399,11 @@
         <a id="mobileRegisterTopLink" class="button signed-out" href="#">Signup</a>
         <button id="mobileSignOutTopButton" class="button button--primary signed-in" type="button" hidden>Sign out</button>
       </nav>
-      <div class="profile-chip">
+      <div class="profile-chip signed-in" data-profile-chip hidden>
         <img src="./assets/profile-avatar.png" alt="Player profile">
         <div>
-          <span>BR3NT</span>
-          <strong>67,075.75</strong>
+          <span data-profile-name>Player</span>
+          <strong data-profile-balance>0</strong>
         </div>
       </div>
     </section>
@@ -1411,11 +1411,11 @@
     <aside class="sidebar-left" aria-label="Player profile">
       <section class="profile-panel">
         <div class="profile-panel__top">
-          <div class="profile-chip">
+          <div class="profile-chip signed-in" data-profile-chip hidden>
             <img src="./assets/profile-avatar.png" alt="Player profile">
             <div>
-              <span>BR3NT</span>
-              <strong>67,075.75</strong>
+              <span data-profile-name>Player</span>
+              <strong data-profile-balance>0</strong>
             </div>
           </div>
         </div>
@@ -1517,9 +1517,9 @@
           "id": "21holdem-game",
           "name": "21 Hold'em",
           "type": "game",
-          "status": "Docker",
-          "url": "http://DESKTOP-10JDCIN:3100",
-          "description": "21 Hold'em player frontend served by Docker, with API and socket traffic proxied to the Docker backend."
+          "status": "Live",
+          "url": "https://21-holdem.com",
+          "description": "21 Hold'em live frontend and backend auth entry point."
         }
       ]
     }
@@ -1537,7 +1537,6 @@
 
       try {
         const parsedUrl = new URL(baseUrl);
-        if (window.location.hostname) parsedUrl.hostname = window.location.hostname;
         parsedUrl.pathname = path;
         parsedUrl.search = path.startsWith('/') ? `?dev=${devCacheBust}` : '';
         parsedUrl.hash = '';
@@ -1568,6 +1567,49 @@
       document.querySelectorAll('.signed-out').forEach((node) => {
         node.hidden = has21HoldemSession;
       });
+
+      document.querySelectorAll('[data-profile-chip]').forEach((node) => {
+        node.hidden = true;
+      });
+    }
+
+    function formatChips(value) {
+      return new Intl.NumberFormat('en-US').format(Number(value) || 0);
+    }
+
+    async function loadHubProfile() {
+      const token = readCookie('sAuthToken');
+      if (!token) return;
+
+      try {
+        const response = await fetch(resolveGameUrl('/api/v1/profile'), {
+          headers: { Authorization: token },
+        });
+        if (!response.ok) {
+          if (response.status === 401) clearCookie('sAuthToken');
+          applySessionState();
+          return;
+        }
+
+        const payload = await response.json();
+        const profile = payload?.data || {};
+        const name = profile.sUserName || 'Player';
+        const balance = formatChips(profile.nChips);
+
+        document.querySelectorAll('[data-profile-name]').forEach((node) => {
+          node.textContent = name;
+        });
+        document.querySelectorAll('[data-profile-balance]').forEach((node) => {
+          node.textContent = balance;
+        });
+        document.querySelectorAll('[data-profile-chip]').forEach((node) => {
+          node.hidden = false;
+        });
+      } catch {
+        document.querySelectorAll('[data-profile-chip]').forEach((node) => {
+          node.hidden = true;
+        });
+      }
     }
 
     function clearCookie(name) {
@@ -1867,6 +1909,7 @@
     setupLeaderboards();
     applySessionState();
     setupSignOutButtons();
+    loadHubProfile();
     setInterval(applyAestLightingTheme, 5 * 60 * 1000);
   </script>
 </body>
