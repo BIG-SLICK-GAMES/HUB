@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Big Slick Games</title>
+  <style>
+    :root { color-scheme: dark; }
+    body { margin:0; min-height:100svh; display:grid; place-items:center; font-family:Arial,Helvetica,sans-serif; color:#fff; background:#070a10; }
+    main { width:min(100% - 28px, 520px); text-align:center; }
+    a { color:#ffb13b; font-weight:900; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Big Slick Games</h1>
+    <p id="message">Finding that page...</p>
+    <p><a href="./index.html">Return to the hub</a></p>
+  </main>
+  <script>
+    const path = window.location.pathname.replace(/\/+$/, '').toLowerCase();
+    if (path === '/login') {
+      const target = new URL('/login/index.html', window.location.origin);
+      target.search = window.location.search;
+      window.location.replace(target.toString());
+    } else {
+      document.getElementById('message').textContent = 'That page is not available.';
+    }
+  </script>
+</body>
+</html>
