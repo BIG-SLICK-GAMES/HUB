@@ -5,31 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BSG Login | Big Slick Games</title>
   <style>
-    :root { color-scheme: dark; --ink:#fff; --soft:#c5cad3; --orange:#ff6a00; --gold:#ffb13b; --panel:rgba(13,17,25,.9); --line:rgba(255,106,0,.48); }
+    :root { color-scheme: dark; --ink:#fff; --soft:#c5cad3; --muted:#818997; --orange:#ff6a00; --gold:#ffb13b; --panel:rgba(13,17,25,.92); --line:rgba(255,106,0,.48); --field:rgba(255,255,255,.08); }
     * { box-sizing: border-box; }
     body { margin:0; min-height:100svh; display:grid; place-items:center; font-family:Arial,Helvetica,sans-serif; color:var(--ink); background:radial-gradient(circle at 78% 8%, rgba(255,106,0,.28), transparent 30%), url("../assets/hub-bokeh-background.png?v=20260716a") center/cover fixed no-repeat, #070a10; }
-    main { width:min(100% - 28px, 520px); padding:28px; border-radius:24px; background:linear-gradient(145deg, rgba(255,255,255,.06), transparent 40%), var(--panel); box-shadow:inset 0 0 0 1px var(--line), 0 28px 80px rgba(0,0,0,.44); text-align:center; }
-    h1 { margin:0; font-size:clamp(38px,10vw,64px); line-height:.9; text-transform:uppercase; }
-    p { margin:14px 0 22px; color:var(--soft); font-size:17px; font-weight:800; line-height:1.35; }
-    a { display:inline-flex; min-height:44px; align-items:center; justify-content:center; padding:0 18px; border-radius:999px; background:linear-gradient(180deg,var(--gold),var(--orange)); color:#170700; font-size:12px; font-weight:950; text-decoration:none; text-transform:uppercase; }
+    main { width:min(100% - 28px, 480px); padding:28px; border-radius:22px; background:linear-gradient(145deg, rgba(255,255,255,.06), transparent 40%), var(--panel); box-shadow:inset 0 0 0 1px var(--line), 0 28px 80px rgba(0,0,0,.44); }
+    h1 { margin:0; font-size:clamp(38px,10vw,60px); line-height:.9; text-transform:uppercase; text-align:center; }
+    p { margin:14px 0 22px; color:var(--soft); font-size:16px; font-weight:800; line-height:1.35; text-align:center; }
+    form { display:grid; gap:14px; }
+    label { display:grid; gap:7px; color:var(--muted); font-size:12px; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+    input { width:100%; min-height:48px; border:1px solid rgba(255,255,255,.14); border-radius:12px; padding:0 14px; background:var(--field); color:var(--ink); font-size:16px; font-weight:800; outline:none; }
+    input:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(255,177,59,.16); }
+    button, a { min-height:46px; border:0; border-radius:999px; padding:0 18px; font-size:12px; font-weight:950; text-decoration:none; text-transform:uppercase; cursor:pointer; }
+    button { background:linear-gradient(180deg,var(--gold),var(--orange)); color:#170700; box-shadow:0 10px 24px rgba(255,106,0,.28); }
+    button:disabled { cursor:wait; filter:saturate(.7); opacity:.7; }
+    a { display:inline-flex; align-items:center; justify-content:center; color:var(--soft); background:rgba(255,255,255,.08); }
+    .actions { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:4px; }
+    .status { min-height:20px; margin:2px 0 0; color:#ffcf8a; font-size:13px; font-weight:800; text-align:center; }
   </style>
 </head>
 <body>
   <main>
     <h1>BSG Login</h1>
-    <p>Opening the shared Big Slick Games sign-in screen.</p>
-    <a id="loginLink" href="https://21-holdem.com/login">Continue To Login</a>
+    <p>Sign in to your Big Slick Games profile.</p>
+    <form id="loginForm" autocomplete="on">
+      <label>
+        Email or username
+        <input id="loginId" name="sEmail" autocomplete="username" required>
+      </label>
+      <label>
+        Password
+        <input id="password" name="sPassword" type="password" autocomplete="current-password" required>
+      </label>
+      <div class="actions">
+        <a href="../index.html">Back</a>
+        <button id="submitButton" type="submit">Login</button>
+      </div>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+    </form>
   </main>
   <script>
-    const target = new URL('https://21-holdem.com/login');
-    const params = new URLSearchParams(window.location.search);
-    const product = params.get('product');
-    const returnUrl = params.get('return') || params.get('returnUrl');
-    if (product) target.searchParams.set('product', product);
-    if (returnUrl) target.searchParams.set('return', returnUrl);
-    const link = document.getElementById('loginLink');
-    link.href = target.toString();
-    window.location.replace(target.toString());
+    const form = document.getElementById('loginForm');
+    const statusNode = document.getElementById('status');
+    const submitButton = document.getElementById('submitButton');
+
+    function setCookie(name, value, days) {
+      const maxAge = days ? `; max-age=${days * 24 * 60 * 60}` : '';
+      const secure = window.location.protocol === 'https:' ? '; secure' : '';
+      document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax${secure}${maxAge}`;
+    }
+
+    function getAuthToken(payload) {
+      return payload?.data?.authorization
+        || payload?.authorization
+        || payload?.data?.data?.authorization
+        || '';
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      statusNode.textContent = '';
+      submitButton.disabled = true;
+      submitButton.textContent = 'Signing in...';
+
+      try {
+        const response = await fetch('https://21-holdem.com/api/v1/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sEmail: document.getElementById('loginId').value.trim(),
+            sPassword: document.getElementById('password').value,
+          }),
+        });
+        const payload = await response.json().catch(() => ({}));
+        const token = getAuthToken(payload);
+
+        if (!response.ok || !token) {
+          statusNode.textContent = payload?.message || payload?.data?.message || 'Login failed.';
+          return;
+        }
+
+        setCookie('sAuthToken', token, 14);
+        window.location.assign('../index.html');
+      } catch (error) {
+        statusNode.textContent = 'Login service is not reachable.';
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Login';
+      }
+    });
   </script>
 </body>
 </html>

@@ -146,7 +146,7 @@
 
     async function loadShop() {
       await loadProjectConfig();
-      loginLink.href = token ? './index.html' : resolveGameUrl('/login');
+      loginLink.href = token ? './index.html' : './login/';
       loginLink.textContent = token ? 'Signed in' : 'Sign in';
       if (!token) {
         setStatus('Sign in once and your BSG wallet follows you across the hub and game.', 'Signed out');
