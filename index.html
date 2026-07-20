@@ -3558,6 +3558,27 @@
       return `${LAUNCH3001_BASE_URL}/#${params.toString()}`;
     }
 
+    function build21HoldemUrl() {
+      const token = readCookie('sAuthToken');
+      if (!token) return resolveGameUrl('/');
+
+      const url = new URL(resolveGameUrl('/'));
+      url.searchParams.set('hubToken', token);
+      return url.toString();
+    }
+
+    function update21HoldemLinks() {
+      const holdemUrl = build21HoldemUrl();
+      [
+        document.getElementById('gameHoldemPlay'),
+        document.getElementById('playLink'),
+        document.getElementById('quickPlayLink'),
+      ].forEach((node) => {
+        if (!node) return;
+        node.href = holdemUrl;
+      });
+    }
+
     function updateLaunch3001Links() {
       const launchUrl = buildLaunch3001Url();
       [
@@ -3612,7 +3633,7 @@
 
     const rotatingNavGames = [
       { label: "21 Stack'em", href: '/' },
-      { label: "21 Hold'em", href: '/' },
+      { label: "21 Hold'em", href: '/', holdem: true },
       { label: 'Quake', href: '/' },
       { label: 'Racing Suits', href: '/' },
       { label: 'Launch 3001', href: LAUNCH3001_BASE_URL, external: true, launch: true },
@@ -3627,7 +3648,7 @@
       const game = rotatingNavGames[index] || rotatingNavGames[0];
       const launchUnlocked = document.body.classList.contains('has-launch3001-admin');
       nav.textContent = game.launch ? `${launchUnlocked ? 'Play' : 'Demo'} ${game.label}` : game.label;
-      nav.href = game.launch ? buildLaunch3001Url() : resolveGameUrl(game.href);
+      nav.href = game.launch ? buildLaunch3001Url() : game.holdem ? build21HoldemUrl() : resolveGameUrl(game.href);
 
       if (game.external) {
         nav.target = '_blank';
@@ -3662,6 +3683,7 @@
         const name = profile.sUserName || 'Player';
         const balance = formatChips(profile.nChips);
         setLaunch3001Access(hasLaunch3001Admin(profile));
+        update21HoldemLinks();
         updateLaunch3001Links();
 
         document.querySelectorAll('[data-profile-name]').forEach((node) => {
@@ -3984,6 +4006,7 @@
     setupLeaderboards();
     updateRotatingGameNav();
     applySessionState();
+    update21HoldemLinks();
     updateLaunch3001Links();
     setupSignOutButtons();
     loadHubProfile();
