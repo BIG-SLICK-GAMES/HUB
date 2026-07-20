@@ -3520,6 +3520,9 @@
         .join('=') || '';
     }
 
+    const LAUNCH3001_BASE_URL = 'https://launch3001.netlify.app';
+    let currentHubProfile = null;
+
     function applySessionState() {
       const has21HoldemSession = Boolean(readCookie('sAuthToken'));
       document.body.classList.toggle('is-authenticated', has21HoldemSession);
@@ -3535,6 +3538,37 @@
 
       document.querySelectorAll('[data-profile-chip]').forEach((node) => {
         node.hidden = true;
+      });
+    }
+
+    function buildLaunch3001Url() {
+      const token = readCookie('sAuthToken');
+      if (!token) return LAUNCH3001_BASE_URL;
+
+      const params = new URLSearchParams();
+      params.set('bsg', '1');
+      params.set('bsgToken', token);
+      params.set('id', currentHubProfile?._id || currentHubProfile?.id || currentHubProfile?.iUserId || '');
+      params.set('player', currentHubProfile?.sUserName || 'Player');
+      params.set('email', currentHubProfile?.sEmail || currentHubProfile?.email || '');
+      params.set('avatar', currentHubProfile?.sProfilePic || currentHubProfile?.avatar || '');
+      params.set('chips', String(Number(currentHubProfile?.nChips) || 0));
+      params.set('access', document.body.classList.contains('has-launch3001-admin') ? 'full' : 'demo');
+      params.set('source', 'bsg-hub');
+      return `${LAUNCH3001_BASE_URL}/#${params.toString()}`;
+    }
+
+    function updateLaunch3001Links() {
+      const launchUrl = buildLaunch3001Url();
+      [
+        document.getElementById('gameLaunch3001Play'),
+        document.getElementById('gameLaunch3001Info'),
+        document.querySelector('.game-tile[aria-label="Launch 3001"] .game-title-link'),
+      ].forEach((node) => {
+        if (!node) return;
+        node.href = launchUrl;
+        node.target = '_blank';
+        node.rel = 'noopener noreferrer';
       });
     }
 
@@ -3572,6 +3606,7 @@
       document.body.classList.toggle('has-launch3001-admin', Boolean(isAdmin));
       const launchButton = document.getElementById('gameLaunch3001Play');
       if (launchButton) launchButton.textContent = isAdmin ? 'Play' : 'Demo';
+      updateLaunch3001Links();
       updateRotatingGameNav();
     }
 
@@ -3580,7 +3615,7 @@
       { label: "21 Hold'em", href: '/' },
       { label: 'Quake', href: '/' },
       { label: 'Racing Suits', href: '/' },
-      { label: 'Launch 3001', href: 'https://launch3001.netlify.app', external: true, launch: true },
+      { label: 'Launch 3001', href: LAUNCH3001_BASE_URL, external: true, launch: true },
     ];
     const rotatingNavStartedAt = performance.now();
 
@@ -3592,7 +3627,7 @@
       const game = rotatingNavGames[index] || rotatingNavGames[0];
       const launchUnlocked = document.body.classList.contains('has-launch3001-admin');
       nav.textContent = game.launch ? `${launchUnlocked ? 'Play' : 'Demo'} ${game.label}` : game.label;
-      nav.href = resolveGameUrl(game.href);
+      nav.href = game.launch ? buildLaunch3001Url() : resolveGameUrl(game.href);
 
       if (game.external) {
         nav.target = '_blank';
@@ -3623,9 +3658,11 @@
 
         const payload = await response.json();
         const profile = payload?.data || {};
+        currentHubProfile = profile;
         const name = profile.sUserName || 'Player';
         const balance = formatChips(profile.nChips);
         setLaunch3001Access(hasLaunch3001Admin(profile));
+        updateLaunch3001Links();
 
         document.querySelectorAll('[data-profile-name]').forEach((node) => {
           node.textContent = name;
@@ -3920,12 +3957,12 @@
       gameHoldemPlay: '/',
       gameQuakePlay: '/',
       gameRacingPlay: '/',
-      gameLaunch3001Play: 'https://launch3001.netlify.app',
+      gameLaunch3001Play: LAUNCH3001_BASE_URL,
       gameStackemInfo: './games/21-stackem.html',
       gameHoldemInfo: './games/21-holdem.html',
       gameQuakeInfo: './games/mini-games.html',
       gameRacingInfo: './games/racing-suits.html',
-      gameLaunch3001Info: 'https://launch3001.netlify.app',
+      gameLaunch3001Info: LAUNCH3001_BASE_URL,
       quickShopLink: './shop.html',
       quickSocialsLink: './socials.html',
       quickContactLink: './contact.html',
@@ -3947,6 +3984,7 @@
     setupLeaderboards();
     updateRotatingGameNav();
     applySessionState();
+    updateLaunch3001Links();
     setupSignOutButtons();
     loadHubProfile();
     setInterval(applyAestLightingTheme, 5 * 60 * 1000);
