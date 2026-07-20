@@ -86,6 +86,47 @@
       box-shadow: 0 0 24px rgba(var(--brand-orange-rgb), 0.34);
     }
 
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding: 8px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.06), transparent 44%), rgba(8,11,16,0.72);
+      box-shadow: inset 0 0 0 1px rgba(var(--brand-orange-rgb), 0.28), 0 14px 32px rgba(0,0,0,0.28);
+      backdrop-filter: blur(12px) saturate(1.2);
+    }
+
+    .site-nav__link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 10px 14px 9px;
+      border-radius: 12px;
+      color: var(--soft);
+      font-size: 11px;
+      font-weight: 950;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: inset 0 0 0 1px rgba(255,177,59,0.16);
+    }
+
+    .site-nav__link.is-active {
+      background: linear-gradient(180deg, var(--brand-amber), var(--brand-orange));
+      color: #170700;
+      box-shadow: 0 0 16px rgba(var(--brand-orange-rgb), 0.3);
+    }
+
+    .site-nav__link--launch {
+      color: #87ffc9;
+      box-shadow: inset 0 0 0 1px rgba(70,223,160,0.32);
+    }
+
     .hero,
     .social-card {
       border-radius: 24px;
@@ -149,6 +190,19 @@
     }
 
     @media (max-width: 760px) {
+      .site-nav {
+        justify-content: flex-start;
+        overflow-x: auto;
+        scrollbar-width: thin;
+      }
+
+      .site-nav__link {
+        flex: 0 0 auto;
+        min-height: 34px;
+        padding: 9px 11px 8px;
+        font-size: 10px;
+      }
+
       .grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -158,6 +212,13 @@
     <nav class="top">
       <a class="pill" href="./index.html">Back</a>
       <a class="button" href="https://www.facebook.com/profile.php?id=61576097674557" target="_blank" rel="noopener">Open Facebook</a>
+    </nav>
+
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="site-nav__link" href="./index.html">Hub</a>
+      <a class="site-nav__link" href="./shop.html">Shop</a>
+      <a class="site-nav__link is-active" href="./socials.html">Socials</a>
+      <a class="site-nav__link" href="./contact.html">Contact</a>
     </nav>
 
     <header class="hero">

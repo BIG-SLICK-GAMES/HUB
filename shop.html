@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Chip Store | Big Slick Games</title>
   <style>
-    :root { color-scheme: dark; --ink:#fff; --soft:#c5cad3; --muted:#8f96a3; --orange:#ff6a00; --gold:#ffb13b; --panel:rgba(13,17,25,.9); --line:rgba(255,106,0,.48); }
+    :root { color-scheme: dark; --ink:#fff; --soft:#c5cad3; --muted:#8f96a3; --orange:#ff6a00; --gold:#ffb13b; --green:#46dfa0; --panel:rgba(13,17,25,.9); --line:rgba(255,106,0,.48); }
     * { box-sizing: border-box; }
     body { margin:0; min-height:100svh; font-family:Arial,Helvetica,sans-serif; color:var(--ink); background: radial-gradient(circle at 78% 8%, rgba(255,106,0,.28), transparent 30%), radial-gradient(circle at 14% 20%, rgba(92,124,255,.18), transparent 28%), url("./assets/hub-bokeh-background.png?v=20260716a") center/cover fixed no-repeat, #070a10; }
     body::before { content:""; position:fixed; inset:0; pointer-events:none; background:repeating-linear-gradient(90deg, rgba(255,255,255,.035) 0 1px, transparent 1px 22px); opacity:.5; animation:drift 24s linear infinite; }
@@ -15,6 +15,10 @@
     .top { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; }
     .pill { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:12px 16px 11px; border-radius:999px; background:rgba(255,255,255,.08); box-shadow:inset 0 0 0 1px rgba(255,106,0,.38); font-size:12px; font-weight:950; text-transform:uppercase; }
     .pill--hot { background:linear-gradient(180deg,#ffb13b,#ff6a00); color:#170700; box-shadow:0 0 24px rgba(255,106,0,.34); }
+    .site-nav { display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:16px; padding:8px; border-radius:16px; background:linear-gradient(145deg, rgba(255,255,255,.06), transparent 44%), rgba(8,11,16,.72); box-shadow:inset 0 0 0 1px rgba(255,106,0,.28), 0 14px 32px rgba(0,0,0,.28); backdrop-filter:blur(12px) saturate(1.2); }
+    .site-nav__link { display:inline-flex; align-items:center; justify-content:center; min-height:38px; padding:10px 14px 9px; border-radius:12px; color:var(--soft); font-size:11px; font-weight:950; letter-spacing:.06em; line-height:1; text-transform:uppercase; white-space:nowrap; box-shadow:inset 0 0 0 1px rgba(255,177,59,.16); }
+    .site-nav__link.is-active { background:linear-gradient(180deg,#ffb13b,#ff6a00); color:#170700; box-shadow:0 0 16px rgba(255,106,0,.3); }
+    .site-nav__link--launch { color:#87ffc9; box-shadow:inset 0 0 0 1px rgba(70,223,160,.32); }
     .hero, .store-card, .status { border-radius:24px; background:linear-gradient(145deg, rgba(255,255,255,.06), transparent 40%), var(--panel); box-shadow:inset 0 0 0 1px var(--line), 0 28px 80px rgba(0,0,0,.44); }
     .hero { display:grid; grid-template-columns:minmax(0,1fr) 260px; gap:24px; align-items:center; padding:clamp(22px,5vw,46px); overflow:hidden; }
     h1 { margin:0; font-size:clamp(46px,8vw,86px); line-height:.88; text-transform:uppercase; }
@@ -26,16 +30,31 @@
     .store-card { min-height:240px; display:grid; gap:12px; align-content:space-between; padding:18px; }
     .store-card span { color:var(--muted); font-size:11px; font-weight:950; letter-spacing:.12em; text-transform:uppercase; }
     .store-card h2 { margin:0; font-size:28px; line-height:1; }
+    .store-card h2 a { color:inherit; text-decoration:none; }
+    .store-card h2 a:hover, .store-card h2 a:focus-visible { color:var(--gold); text-shadow:0 0 14px rgba(255,177,59,.32); }
     .chips { color:var(--gold); font-size:38px; font-weight:950; line-height:1; }
     .price { color:var(--soft); font-size:18px; font-weight:950; }
+    .store-card--game { background:linear-gradient(145deg, rgba(70,223,160,.14), transparent 42%), rgba(4,24,18,.92); box-shadow:inset 0 0 0 1px rgba(70,223,160,.62), 0 28px 80px rgba(0,0,0,.44), 0 0 22px rgba(70,223,160,.16); }
+    .store-card--game span, .store-card--game .price { color:#87ffc9; }
+    .store-art { width:96px; height:96px; border-radius:18px; object-fit:cover; box-shadow:0 0 0 1px rgba(70,223,160,.5), 0 14px 28px rgba(0,0,0,.38); }
+    .game-product { display:grid; grid-template-columns:96px minmax(0,1fr); gap:14px; align-items:center; }
+    .game-product p { margin:8px 0 0; color:var(--soft); font-size:13px; font-weight:850; line-height:1.25; }
+    .store-card--owned button { background:linear-gradient(180deg,#46dfa0,#12784d); }
     button { min-height:42px; border:0; border-radius:999px; background:linear-gradient(180deg,#ffb13b,#ff6a00); color:#170700; cursor:pointer; font:inherit; font-size:12px; font-weight:950; text-transform:uppercase; }
     button:disabled { cursor:not-allowed; filter:grayscale(.7); opacity:.58; }
-    @media (max-width:800px) { .hero { grid-template-columns:1fr; } .hero img { max-width:260px; } .grid { grid-template-columns:1fr; } .status { align-items:flex-start; flex-direction:column; } }
+    @media (max-width:800px) { .site-nav { justify-content:flex-start; overflow-x:auto; scrollbar-width:thin; } .site-nav__link { flex:0 0 auto; min-height:34px; padding:9px 11px 8px; font-size:10px; } .hero { grid-template-columns:1fr; } .hero img { max-width:260px; } .grid { grid-template-columns:1fr; } .status { align-items:flex-start; flex-direction:column; } }
+    @media (max-width:420px) { .game-product { grid-template-columns:76px minmax(0,1fr); } .store-art { width:76px; height:76px; } }
   </style>
 </head>
 <body>
   <main>
     <nav class="top"><a class="pill" href="./index.html">Back</a><a id="loginLink" class="pill pill--hot" href="/login">Sign in</a></nav>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="site-nav__link" href="./index.html">Hub</a>
+      <a class="site-nav__link is-active" href="./shop.html">Shop</a>
+      <a class="site-nav__link" href="./socials.html">Socials</a>
+      <a class="site-nav__link" href="./contact.html">Contact</a>
+    </nav>
     <header class="hero">
       <div><h1>Chip Store</h1><p class="lead">The Big Slick Games wallet powers the whole ecosystem. Buy chips here and use the same signed-in balance across 21 Hold'em and every BSG game.</p></div>
       <img src="./assets/icon-21-stackem-simple.png?v=20260716a" alt="">
@@ -45,16 +64,26 @@
   </main>
   <script>
     const fallbackPackages = [
-      { sTitle: 'Starter Stack', nChips: 5000, nPrice: 0.99, sCurrency: 'USD' },
-      { sTitle: 'Table Refill', nChips: 15000, nPrice: 2.99, sCurrency: 'USD' },
-      { sTitle: 'Night Session', nChips: 50000, nPrice: 7.99, sCurrency: 'USD' },
+      { sTitle: 'Starter Stack', nChips: 5000, nPrice: 0.99, sCurrency: 'AUD' },
+      { sTitle: 'Table Refill', nChips: 15000, nPrice: 2.99, sCurrency: 'AUD' },
+      { sTitle: 'Night Session', nChips: 50000, nPrice: 7.99, sCurrency: 'AUD' },
     ];
+    const launch3001Product = {
+      sType: 'game',
+      sTitle: 'Launch 3001',
+      sDescription: 'Full game access for mobile, PC, and VR.',
+      nPrice: 1.99,
+      sCurrency: 'AUD',
+      sImage: './assets/icon-launch-3001.png?v=20260719a',
+      sProductId: 'launch3001',
+    };
+    const launch3001OwnedKey = 'bsg.launch3001.fullGame';
     const readCookie = (name) => document.cookie.split(';').map((v) => v.trim()).find((v) => v.startsWith(`${name}=`))?.split('=').slice(1).join('=') || '';
     const token = readCookie('sAuthToken');
     const status = document.getElementById('sessionStatus');
     const grid = document.getElementById('shopGrid');
     const loginLink = document.getElementById('loginLink');
-    const money = (value, currency = 'USD') => new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(Number(value) || 0);
+    const money = (value, currency = 'AUD') => new Intl.NumberFormat('en-AU', { style: 'currency', currency }).format(Number(value) || 0);
     const chips = (value) => new Intl.NumberFormat('en-US').format(Number(value) || 0);
     let gameBaseUrl = '/';
 
@@ -89,13 +118,30 @@
     }
 
     function render(items) {
-      grid.innerHTML = items.map((item) => `
-        <article class="store-card">
-          <div><span>${item.sTitle || 'Chip Pack'}</span><h2>${item.sTitle || 'Chip Pack'}</h2></div>
-          <div><div class="chips">${chips(item.nChips)}</div><div class="price">${money(item.nPrice, item.sCurrency || 'USD')}</div></div>
-          <button type="button" data-price="${Number(item.nPrice)}"${token ? '' : ' disabled'}>${token ? 'Buy Chips' : 'Sign in to buy'}</button>
-        </article>
-      `).join('');
+      const products = [...items, launch3001Product];
+      grid.innerHTML = products.map((item) => {
+        if (item.sType === 'game' && item.sProductId === 'launch3001') {
+          const owned = localStorage.getItem(launch3001OwnedKey) === 'true';
+          return `
+            <article class="store-card store-card--game${owned ? ' store-card--owned' : ''}">
+              <div class="game-product">
+                <img class="store-art" src="${item.sImage}" alt="">
+                <div><span>Full Game</span><h2><a href="https://launch3001.netlify.app" target="_blank" rel="noopener noreferrer">${item.sTitle}</a></h2><p>${item.sDescription}</p></div>
+              </div>
+              <div><div class="chips">Full Game</div><div class="price">${money(item.nPrice, item.sCurrency)} AUD</div></div>
+              <button type="button" data-product="launch3001" data-price="${Number(item.nPrice)}"${owned || !token ? ' disabled' : ''}>${owned ? 'Owned' : token ? 'Buy Launch 3001' : 'Sign in to buy'}</button>
+            </article>
+          `;
+        }
+
+        return `
+          <article class="store-card">
+            <div><span>Chip Package</span><h2>${item.sTitle || 'Chip Pack'}</h2></div>
+            <div><div class="chips">${chips(item.nChips)}</div><div class="price">${money(item.nPrice, item.sCurrency || 'AUD')} AUD</div></div>
+            <button type="button" data-price="${Number(item.nPrice)}"${token ? '' : ' disabled'}>${token ? 'Buy Chips' : 'Sign in to buy'}</button>
+          </article>
+        `;
+      }).join('');
     }
 
     async function loadShop() {
@@ -104,6 +150,7 @@
       loginLink.textContent = token ? 'Signed in' : 'Sign in';
       if (!token) {
         setStatus('Sign in once and your BSG wallet follows you across the hub and game.', 'Signed out');
+        grid.dataset.liveItems = JSON.stringify(fallbackPackages);
         render(fallbackPackages);
         return;
       }
@@ -111,8 +158,11 @@
       try {
         const response = await gameFetch('/api/v1/shop', { headers: { Authorization: token } });
         const payload = await response.json();
-        render(Array.isArray(payload?.data) && payload.data.length ? payload.data : fallbackPackages);
+        const items = Array.isArray(payload?.data) && payload.data.length ? payload.data : fallbackPackages;
+        grid.dataset.liveItems = JSON.stringify(items);
+        render(items);
       } catch {
+        grid.dataset.liveItems = JSON.stringify(fallbackPackages);
         render(fallbackPackages);
         setStatus('Store preview loaded. Live shop API was not reachable from this hub route.', 'Preview');
       }
@@ -120,7 +170,18 @@
 
     grid.addEventListener('click', async (event) => {
       const button = event.target.closest('button[data-price]');
-      if (!button || !token) return;
+      if (!button) return;
+      if (button.dataset.product === 'launch3001') {
+        if (!token) return;
+        const confirmed = window.confirm('Purchase Launch 3001 full game access for $1.99 AUD?');
+        if (!confirmed) return;
+        localStorage.setItem(launch3001OwnedKey, 'true');
+        setStatus('Launch 3001 full game unlocked. Return to the hub and DEMO will show as PLAY.', 'Purchased');
+        render(grid.dataset.liveItems ? JSON.parse(grid.dataset.liveItems) : fallbackPackages);
+        return;
+      }
+
+      if (!token) return;
       button.disabled = true;
       button.textContent = 'Starting...';
       try {
