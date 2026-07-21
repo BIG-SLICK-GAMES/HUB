@@ -1403,6 +1403,13 @@
         <a id="mobileRegisterTopLink" class="button signed-out" href="#">Signup</a>
         <button id="mobileSignOutTopButton" class="button button--primary signed-in" type="button" hidden>Sign out</button>
       </nav>
+      <div class="profile-chip signed-out">
+        <img src="./assets/profile-avatar.png" alt="Guest profile">
+        <div>
+          <span>Guest</span>
+          <strong>Sign in</strong>
+        </div>
+      </div>
       <div class="profile-chip signed-in" data-profile-chip hidden>
         <img src="./assets/profile-avatar.png" alt="Player profile">
         <div>
@@ -1415,6 +1422,13 @@
     <aside class="sidebar-left" aria-label="Player profile">
       <section class="profile-panel">
         <div class="profile-panel__top">
+          <div class="profile-chip signed-out">
+            <img src="./assets/profile-avatar.png" alt="Guest profile">
+            <div>
+              <span>Guest</span>
+              <strong>Sign in</strong>
+            </div>
+          </div>
           <div class="profile-chip signed-in" data-profile-chip hidden>
             <img src="./assets/profile-avatar.png" alt="Player profile">
             <div>
@@ -1522,7 +1536,7 @@
           "name": "21 Hold'em",
           "type": "game",
           "status": "Live",
-          "url": "https://21-holdem.com",
+          "url": "http://127.0.0.1:3002/",
           "description": "21 Hold'em live frontend and backend auth entry point."
         }
       ]
@@ -1540,6 +1554,16 @@
       const baseUrl = project?.url || '/';
 
       try {
+        if (baseUrl.startsWith('/')) {
+          if (path.startsWith('/api/')) {
+            return `/holdem-api${path}?dev=${devCacheBust}`;
+          }
+
+          const normalizedBase = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+          const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+          return `${normalizedBase}${normalizedPath}${path.startsWith('/') ? `?dev=${devCacheBust}` : ''}`;
+        }
+
         const parsedUrl = new URL(baseUrl);
         parsedUrl.pathname = path;
         parsedUrl.search = path.startsWith('/') ? `?dev=${devCacheBust}` : '';
