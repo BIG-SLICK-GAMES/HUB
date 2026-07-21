@@ -110,7 +110,7 @@
 
     async function loadRewards() {
       await loadProjectConfig();
-      loginLink.href = token ? './index.html' : resolveGameUrl('/login');
+      loginLink.href = token ? './index.html' : './login/';
       loginLink.textContent = token ? 'Signed in' : 'Sign in';
       if (!token) {
         setStatus(['Signed out', 'Preview rewards']);
