@@ -3496,7 +3496,7 @@
           "name": "21 Hold'em",
           "type": "game",
           "status": "Live",
-          "url": "http://127.0.0.1:3002/",
+          "url": "https://21-holdem.com",
           "description": "21 Hold'em live frontend and backend auth entry point."
         }
       ]
@@ -3506,12 +3506,28 @@
   <script>
     const fallbackData = JSON.parse(document.getElementById('fallbackProjects').textContent);
     const devCacheBust = Date.now().toString(36);
+    const LOCAL_HUB_HOSTS = new Set(['127.0.0.1', 'localhost', 'hub.bsg.local']);
+    const LOCAL_21_HOLDEM_URL = 'http://21holdem.bsg.local:8080/';
+    const LOCAL_21_HOLDEM_API_BASE = '/holdem-api';
+
+    function isLocalHubHost(hostname = window.location.hostname) {
+      return LOCAL_HUB_HOSTS.has(String(hostname).toLowerCase());
+    }
+
+    function getGameUrl(gameId, target = 'web') {
+      const project = fallbackData.projects.find((item) => item.id === gameId) || fallbackData.projects[0];
+
+      if (gameId === '21holdem-game' && isLocalHubHost()) {
+        return target === 'api' ? LOCAL_21_HOLDEM_API_BASE : LOCAL_21_HOLDEM_URL;
+      }
+
+      return project?.url || '/';
+    }
 
     function resolveGameUrl(path) {
       if (/^(https?:|mailto:|tel:)/i.test(path)) return path;
       if (path.startsWith('./') || path.startsWith('../') || path.startsWith('#')) return path;
-      const project = fallbackData.projects.find((item) => item.id === '21holdem-game') || fallbackData.projects[0];
-      const baseUrl = project?.url || '/';
+      const baseUrl = getGameUrl('21holdem-game', path.startsWith('/api/') ? 'api' : 'web');
 
       try {
         if (baseUrl.startsWith('/')) {
