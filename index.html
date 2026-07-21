@@ -3588,6 +3588,7 @@
     }
 
     function build21HoldemUrl() {
+      if (isLocalHubHost()) return resolveGameUrl('/login');
       return resolveGameUrl('/');
     }
 
@@ -3615,7 +3616,6 @@
         node.href = holdemUrl;
         if (isLocalHubHost()) {
           node.onclick = async (event) => {
-            if (!currentHubProfile) return;
             event.preventDefault();
             const handoffCode = await createGameHandoff('21holdem');
             const url = new URL(holdemUrl, window.location.href);
@@ -3733,6 +3733,7 @@
         const payload = await response.json();
         const profile = isLocalHubHost() ? payload?.user || payload?.profile || {} : payload?.data || {};
         currentHubProfile = profile;
+        applySessionState();
         const name = profile.sUserName || 'Player';
         const balance = formatChips(profile.nChips);
         setLaunch3001Access(hasLaunch3001Admin(profile));
