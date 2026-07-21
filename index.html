@@ -3509,6 +3509,8 @@
     const LOCAL_HUB_HOSTS = new Set(['127.0.0.1', 'localhost', 'hub.bsg.local']);
     const LOCAL_21_HOLDEM_URL = 'http://21holdem.bsg.local:8080/';
     const LOCAL_21_HOLDEM_API_BASE = '/holdem-api';
+    const LOCAL_PLATFORM_API_BASE = '/platform';
+    const LOCAL_LAUNCH3001_URL = 'http://launch3001.bsg.local:8080/';
 
     function isLocalHubHost(hostname = window.location.hostname) {
       return LOCAL_HUB_HOSTS.has(String(hostname).toLowerCase());
@@ -3560,11 +3562,11 @@
         .join('=') || '';
     }
 
-    const LAUNCH3001_BASE_URL = 'https://launch3001.netlify.app';
+    const LAUNCH3001_BASE_URL = isLocalHubHost() ? LOCAL_LAUNCH3001_URL : 'https://launch3001.netlify.app';
     let currentHubProfile = null;
 
     function applySessionState() {
-      const has21HoldemSession = Boolean(readCookie('sAuthToken'));
+      const has21HoldemSession = Boolean(currentHubProfile || readCookie('sAuthToken'));
       document.body.classList.toggle('is-authenticated', has21HoldemSession);
       setLaunch3001Access(hasStoredLaunch3001Access());
 
@@ -3582,29 +3584,24 @@
     }
 
     function buildLaunch3001Url() {
-      const token = readCookie('sAuthToken');
-      if (!token) return LAUNCH3001_BASE_URL;
-
-      const params = new URLSearchParams();
-      params.set('bsg', '1');
-      params.set('bsgToken', token);
-      params.set('id', currentHubProfile?._id || currentHubProfile?.id || currentHubProfile?.iUserId || '');
-      params.set('player', currentHubProfile?.sUserName || 'Player');
-      params.set('email', currentHubProfile?.sEmail || currentHubProfile?.email || '');
-      params.set('avatar', currentHubProfile?.sProfilePic || currentHubProfile?.avatar || '');
-      params.set('chips', String(Number(currentHubProfile?.nChips) || 0));
-      params.set('access', document.body.classList.contains('has-launch3001-admin') ? 'full' : 'demo');
-      params.set('source', 'bsg-hub');
-      return `${LAUNCH3001_BASE_URL}/#${params.toString()}`;
+      return LAUNCH3001_BASE_URL;
     }
 
     function build21HoldemUrl() {
-      const token = readCookie('sAuthToken');
-      if (!token) return resolveGameUrl('/');
+      return resolveGameUrl('/');
+    }
 
-      const url = new URL(resolveGameUrl('/'));
-      url.searchParams.set('hubToken', token);
-      return url.toString();
+    async function createGameHandoff(game) {
+      if (!isLocalHubHost()) return '';
+      const response = await fetch(`${LOCAL_PLATFORM_API_BASE}/handoff/create`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ game }),
+      });
+      if (!response.ok) return '';
+      const payload = await response.json();
+      return payload?.handoffCode || '';
     }
 
     function update21HoldemLinks() {
@@ -3616,6 +3613,16 @@
       ].forEach((node) => {
         if (!node) return;
         node.href = holdemUrl;
+        if (isLocalHubHost()) {
+          node.onclick = async (event) => {
+            if (!currentHubProfile) return;
+            event.preventDefault();
+            const handoffCode = await createGameHandoff('21holdem');
+            const url = new URL(holdemUrl, window.location.href);
+            if (handoffCode) url.searchParams.set('handoffCode', handoffCode);
+            window.location.assign(url.toString());
+          };
+        }
       });
     }
 
@@ -3630,6 +3637,13 @@
         node.href = launchUrl;
         node.target = '_blank';
         node.rel = 'noopener noreferrer';
+        if (isLocalHubHost()) {
+          node.onclick = async (event) => {
+            if (!currentHubProfile) return;
+            event.preventDefault();
+            window.open(launchUrl, '_blank', 'noopener,noreferrer');
+          };
+        }
       });
     }
 
@@ -3705,12 +3719,11 @@
 
     async function loadHubProfile() {
       const token = readCookie('sAuthToken');
-      if (!token) return;
 
       try {
-        const response = await fetch(resolveGameUrl('/api/v1/profile'), {
-          headers: { Authorization: token },
-        });
+        const response = isLocalHubHost()
+          ? await fetch(`${LOCAL_PLATFORM_API_BASE}/auth/session`, { credentials: 'include' })
+          : await fetch(resolveGameUrl('/api/v1/profile'), { headers: { Authorization: token } });
         if (!response.ok) {
           if (response.status === 401) clearCookie('sAuthToken');
           applySessionState();
@@ -3718,7 +3731,7 @@
         }
 
         const payload = await response.json();
-        const profile = payload?.data || {};
+        const profile = isLocalHubHost() ? payload?.user || payload?.profile || {} : payload?.data || {};
         currentHubProfile = profile;
         const name = profile.sUserName || 'Player';
         const balance = formatChips(profile.nChips);
@@ -3749,7 +3762,11 @@
 
     function setupSignOutButtons() {
       document.querySelectorAll('#signOutTopButton, #mobileSignOutTopButton').forEach((button) => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
+          if (isLocalHubHost()) {
+            await fetch(`${LOCAL_PLATFORM_API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }).catch(() => {});
+          }
+          currentHubProfile = null;
           clearCookie('sAuthToken');
           applySessionState();
         });
