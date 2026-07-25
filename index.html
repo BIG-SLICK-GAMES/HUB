@@ -3449,7 +3449,7 @@
           <span class="game-tile__actions"><a id="gameRacingPlay" class="tile-action tile-action--play" href="#">Play</a><a id="gameRacingInfo" class="tile-action" href="#">Info</a></span>
         </article>
         <article class="game-tile" aria-label="Launch 3001">
-          <div class="thumb"><img src="./assets/icon-launch-3001.png?v=20260719a" alt=""><span class="full-game-ribbon">Full Game A$1.99</span><span class="tile-face"><a class="game-title-link" href="https://launch3001.netlify.app" target="_blank" rel="noopener noreferrer"><strong>Launch<br>3001</strong></a></span></div>
+          <div class="thumb"><img src="./assets/icon-launch-3001.png?v=20260719a" alt=""><span class="full-game-ribbon">Full Game A$1.99</span><span class="tile-face"><a class="game-title-link" href="./launch3001/"><strong>Launch<br>3001</strong></a></span></div>
           <span class="game-tile__actions"><a id="gameLaunch3001Play" class="tile-action tile-action--play" href="#">Demo</a><a id="gameLaunch3001Info" class="tile-action" href="#">Info</a></span>
         </article>
       </section>
@@ -3562,7 +3562,7 @@
         .join('=') || '';
     }
 
-    const LAUNCH3001_BASE_URL = isLocalHubHost() ? LOCAL_LAUNCH3001_URL : 'https://launch3001.netlify.app';
+    const LAUNCH3001_BASE_URL = isLocalHubHost() ? LOCAL_LAUNCH3001_URL : './launch3001/';
     let currentHubProfile = null;
 
     function applySessionState() {
@@ -3635,8 +3635,13 @@
       ].forEach((node) => {
         if (!node) return;
         node.href = launchUrl;
-        node.target = '_blank';
-        node.rel = 'noopener noreferrer';
+        if (isLocalHubHost()) {
+          node.target = '_blank';
+          node.rel = 'noopener noreferrer';
+        } else {
+          node.removeAttribute('target');
+          node.removeAttribute('rel');
+        }
         if (isLocalHubHost()) {
           node.onclick = async (event) => {
             if (!currentHubProfile) return;
@@ -3690,7 +3695,7 @@
       { label: "21 Hold'em", href: '/', holdem: true },
       { label: 'Quake', href: '/' },
       { label: 'Racing Suits', href: '/' },
-      { label: 'Launch 3001', href: LAUNCH3001_BASE_URL, external: true, launch: true },
+      { label: 'Launch 3001', href: LAUNCH3001_BASE_URL, external: isLocalHubHost(), launch: true },
     ];
     const rotatingNavStartedAt = performance.now();
 
