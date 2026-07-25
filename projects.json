@@ -7,6 +7,14 @@
       "status": "Live",
       "url": "https://21-holdem.com",
       "description": "21 Hold'em live frontend and backend auth entry point."
+    },
+    {
+      "id": "launch3001",
+      "name": "Launch 3001",
+      "type": "game",
+      "status": "Live",
+      "url": "/launch3001/",
+      "description": "Rocket landing game hosted under the Big Slick Games hub."
     }
   ]
 }
