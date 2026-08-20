@@ -74,7 +74,8 @@
 
     .back-link,
     button,
-    .secondary-action {
+    .secondary-action,
+    .game-action {
       min-height: 46px;
       border: 0;
       border-radius: 8px;
@@ -91,7 +92,8 @@
     }
 
     .back-link,
-    .secondary-action {
+    .secondary-action,
+    .game-action {
       color: var(--soft);
       background: rgba(255, 255, 255, .07);
       box-shadow: inset 0 0 0 1px var(--line);
@@ -230,6 +232,13 @@
     .secondary-action {
       width: 100%;
     }
+
+    .game-action {
+      width: 100%;
+      color: #06120b;
+      background: linear-gradient(180deg, #41ef94, #22bc66);
+      box-shadow: 0 12px 26px rgba(34, 188, 102, .24);
+    }
   </style>
 </head>
 <body>
@@ -270,6 +279,7 @@
 
         <div class="actions">
           <button id="submitButton" type="submit">Sign in securely</button>
+          <a class="game-action" href="https://21-holdem.com/lobby">Take me directly to 21 Hold'em</a>
           <a class="secondary-action" href="https://21-holdem.com/register">Create BSG account</a>
         </div>
 
